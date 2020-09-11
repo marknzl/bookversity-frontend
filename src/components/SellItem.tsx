@@ -26,9 +26,9 @@ function SellItem() {
                                 <label>Price</label>
                                 <input type="number" className="form-control" min="0.00" required></input>
                             </div>
-                            <div className="custom-file">
-                                <input type="file" className="custom-file-input" accept="image/*"></input>
-                                <label className="custom-file-label">Choose file</label>
+                            <div className="form-group">
+                                <label>Upload your image:</label>
+                                <input type="file" accept="image/*"></input>
                             </div>
                         </form>
                         </div>
