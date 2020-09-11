@@ -31,10 +31,16 @@ function getAuthHeader() {
     return { Authorization: 'Bearer ' + jwt };
 }
 
+function getImgHeader() {
+    const jwt = localStorage.getItem("jwt");
+    return { 'content-type': 'multipart/form-data', Authorization: 'Bearer ' + jwt };
+}
+
 export default {
     register,
     login,
     logout,
     isLoggedIn,
-    getAuthHeader
+    getAuthHeader,
+    getImgHeader
 };
