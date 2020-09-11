@@ -1,22 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
+import MyNavbar from './components/MyNavbar';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import Cart from './components/Cart';
+import MyAccount from './components/MyAccount';
+import ViewItem from './components/ViewItem';
+import SellItem from './components/SellItem';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Alert>This is a button</Alert>
-        <Button>Test!</Button>
+    <Router>
+      <div>
+          <MyNavbar />
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/cart" component={Cart} />
+            <Route path="/myaccount" component={MyAccount}></Route>
+            <Route path="/item/:id" component={ViewItem}></Route>
+            <Route path="/sellitem" component={SellItem}></Route>
+          </Switch>
 
-        <form>
-          <input type="file" accept="image/*"></input>
-        </form>
-      </header>
-    </div>
+
+
+          {/* <Alert variant="success">This is a button</Alert>
+          <Button>Test!</Button> */}
+          
+          {/* <form>
+            <input type="file" accept="image/*"></input>
+          </form> */}
+      </div>
+    </Router>
   );
 }
 
