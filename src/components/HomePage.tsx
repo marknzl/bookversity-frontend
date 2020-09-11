@@ -19,7 +19,7 @@ function HomePage() {
 
     const fetchItems = async () => {
         const fItems = await fetch(
-            "https://bookversity-backend.azurewebsites.net/Item/Latest10"
+            "https://bookversity-backend.azurewebsites.net/api/Item/Latest10"
         );
 
         const allItems = await fItems.json();

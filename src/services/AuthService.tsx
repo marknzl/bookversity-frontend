@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "https://bookversity-backend.azurewebsites.net/";
+const API_URL = "https://bookversity-backend.azurewebsites.net/api";
 
 function register(email: string, firstName: string, lastName: string, password: string) {
     return axios.post(API_URL + "/User/Register", {
