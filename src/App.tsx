@@ -7,6 +7,7 @@ import Cart from './components/Cart';
 import MyAccount from './components/MyAccount';
 import ViewItem from './components/ViewItem';
 import SellItem from './components/SellItem';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/myaccount" component={MyAccount}></Route>
             <Route path="/item/:id" component={ViewItem}></Route>
             <Route path="/sellitem" component={SellItem}></Route>
+            <Route path="/login" component={Login}></Route>
           </Switch>
 
 

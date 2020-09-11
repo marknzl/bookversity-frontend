@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import IHomePageItems from '../shared/IHomePageItems';
+import ItemCard from './ItemCard';
 
 function HomePage() {
     useEffect(() => {
@@ -29,6 +30,26 @@ function HomePage() {
         });
     }
 
+    var Items: JSX.Element[] = [];
+
+    if (items.data != null) {
+
+        for (let i = 0; i < items.data.length; i++) {
+            if (items.data === null) {
+                return (
+                    <div>
+
+                    </div>
+                )
+            }
+
+            let item = items.data[i];
+            Items.push(
+                <ItemCard ItemName={item.itemName} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+            )
+        }
+    }   
+
     if (items.loading) {
         return (
             <div>
@@ -43,8 +64,10 @@ function HomePage() {
         ) 
     } else {
         return (
-            <div>
-                Loaded!
+            <div className="container">
+                <div className="row">
+                    {Items}
+                </div>
             </div>
         )
     }
