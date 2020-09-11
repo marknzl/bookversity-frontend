@@ -10,26 +10,28 @@ function SellItem() {
             <Container>
                 <Row>
                     <Col>
-                    <div className="card mt-3">
+                    <div className="card mt-5">
                         <h5 className="card-header">Sell a new item</h5>
                         <div className="card-body">
                         <form className="mt-3">
                             <div className="form-group">
                                 <label>Item Name</label>
-                                <input type="email" className="form-control" required></input>
+                                <input type="text" className="form-control" required></input>
                             </div>
                             <div className="form-group">
-                                <label>Description</label>
-                                <textarea className="form-control" required></textarea>
+                                <label>Description (Max 150 characters)</label>
+                                <textarea className="form-control" rows={3} maxLength={150} required></textarea>
                             </div>
                             <div className="form-group">
                                 <label>Price</label>
-                                <input type="number" className="form-control" min="0.00" required></input>
+                                <input type="number" inputMode="numeric" pattern="[0-9]*" className="form-control" min="0.00" required></input>
                             </div>
                             <div className="form-group">
-                                <label>Upload your image:</label>
+                                <label>Upload your image:</label><br></br>
                                 <input type="file" accept="image/*"></input>
                             </div>
+
+                            <button type="submit" className="btn btn-primary btn-lg btn-block">Sell!</button>
                         </form>
                         </div>
                     </div>
