@@ -60,6 +60,11 @@ function HomePage() {
         });
     }
 
+    const updateFunc = () => {
+        hubConnection?.send("refresh");
+        fetchItems();
+    };
+
     var Items: JSX.Element[] = [];
 
     if (items.data != null) {
@@ -75,7 +80,7 @@ function HomePage() {
 
             let item = items.data[i];
             Items.push(
-                <ItemCard ItemName={item.itemName} UpdateFunc={fetchItems} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
             )
         }
     }   

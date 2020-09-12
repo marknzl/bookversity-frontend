@@ -18,34 +18,11 @@ function ItemCard(props: IItemCardProps) {
 
     let history = useHistory();
 
-    const [hubConnection, setHubConnection] = useState<HubConnection>();
-
-    useEffect(() => {
-        const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build()
-
-            try {
-                await conn.start();
-                console.log("Real-time connection to server established.")
-            } catch (error) {
-                console.log("Couldn't establish a real-time connection to the server!");
-            }
-
-            setHubConnection(conn);
-        };
-
-        createHubConnection();
-    }, []);
-
     const addToCart = (e: any) => {
         //console.log(e.target.id);
 
         CartService.addToCart(e.target.id).then((res) => {
             //console.log(res);
-            hubConnection?.send("refresh");
             props.UpdateFunc();
         });
     }
