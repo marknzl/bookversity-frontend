@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import axios from 'axios';
 
 import AuthService from '../services/AuthService';
 
@@ -11,6 +10,8 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginMsg, setLoginMsg] = useState("");
+
+    //const history = useHistory();
 
     const onChangeEmail = (e: any) => {
         const email = e.target.value;
@@ -28,6 +29,7 @@ function Login() {
         AuthService.login(email, password).then((res) => {
             localStorage.setItem("jwt", res.data);
             window.location.href = '/';
+            //history.push('/');
         },
         (error) => {
             setLoginMsg("Invalid login!")

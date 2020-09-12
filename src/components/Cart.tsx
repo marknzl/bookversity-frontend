@@ -13,6 +13,10 @@ interface ICartItems {
 }
 
 function Cart() {
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
+
     const [cartItems, setCartItems] = useState<ICartItems>({
         loading: true,
         data: null,
@@ -25,6 +29,13 @@ function Cart() {
                 'Authorization': `${AuthService.getAuthHeader().Authorization}`
             },
         });
+
+        const allCartItems = await cItems.json();
+        setCartItems({
+            loading: false,
+            error: false,
+            data: allCartItems
+        });
     };
 
     if (!AuthService.isLoggedIn()) {
@@ -34,22 +45,51 @@ function Cart() {
             </div>
         )
     } else {
-        fetchCartItems();
+        if (cartItems.loading) {
+            return (
+                <h4>Loading..</h4>
+            )
+        } else {
+            var Items: JSX.Element[] = [];
+            let total = 0;
 
-        return (
-            <Container>
-                <Row>
-                    <Col>
-                        <div className="card mt-5">
-                            <h5 className="card-header">Your Cart:</h5>
+            for (let i = 0; i < cartItems.data.length; i++) {
+                let currentItem = cartItems.data[i];
+                total += Number(currentItem.price);
+
+                Items.push(
+                    <div className="col-sm-4 mt-3 mb-3">
+                        <div className="card">
+                            <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
                             <div className="card-body">
-                                
+                                <h5 className="card-title">{currentItem.itemName}</h5>
+                                <p className="card-text">Price: ${currentItem.price}</p> 
                             </div>
                         </div>
-                    </Col>
-                </Row>
-            </Container>
-        )
+                    </div>
+                );
+            }
+
+            return (
+                <Container>
+                    <Row>
+                        <Col>
+                            <div className="card mt-5">
+                                <h5 className="card-header">Your Cart:</h5>
+                                <div className="card-body">
+                                    {Items}
+                                    <hr />
+                                    <div className="mt-3">
+                                        <h5>Total: ${total}</h5>
+                                        <button className="btn btn-success btn-lg btn-block">Purchase</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            )
+        }
     }
 }
 

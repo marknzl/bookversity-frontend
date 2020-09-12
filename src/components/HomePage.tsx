@@ -55,8 +55,8 @@ function HomePage() {
             <div>
                 <Container>
                     <Row>
-                        <Col>
-                            <p>Loading items..</p>
+                        <Col className="mt-4">
+                            <h4>Loading items..</h4>
                         </Col>
                     </Row>
                 </Container>

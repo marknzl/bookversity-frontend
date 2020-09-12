@@ -22,15 +22,6 @@ function App() {
             <Route path="/sellitem" component={SellItem}></Route>
             <Route path="/login" component={Login}></Route>
           </Switch>
-
-
-
-          {/* <Alert variant="success">This is a button</Alert>
-          <Button>Test!</Button> */}
-          
-          {/* <form>
-            <input type="file" accept="image/*"></input>
-          </form> */}
       </div>
     </Router>
   );

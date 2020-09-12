@@ -1,23 +1,29 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
 
 function MyNavbar() {
     let token = localStorage.getItem("jwt");
+    let history = useHistory();
 
     const logout = () => {
         AuthService.logout();
         window.location.href = '/';
     }
 
+    const navigate = (e: any) => {
+        e.preventDefault();
+        history.push('/');
+    };
+
     if (token === null) {
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                    <Navbar.Brand href="/">
+                    <Navbar.Brand onClick={navigate}>
                     <img
                             alt=""
                             src="logo192.png"
@@ -46,7 +52,7 @@ function MyNavbar() {
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                    <Navbar.Brand href="/">
+                    <Navbar.Brand onClick={navigate}>
                     <img
                             alt=""
                             src="logo192.png"
