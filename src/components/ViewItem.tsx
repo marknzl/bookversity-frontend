@@ -54,7 +54,7 @@ function ViewItem() {
                 button = <button id={item.data.id} disabled className="btn btn-success btn-lg btn-block">This is your listing</button>
             }
         } else {
-            button = <button id={item.data.id} className="btn btn-success btn-lg btn-block">Login to add cart</button>
+            button = <button id={item.data.id} className="btn btn-success btn-lg btn-block" disabled>Login to add cart</button>
         }
 
         return (

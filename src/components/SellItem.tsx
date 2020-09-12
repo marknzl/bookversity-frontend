@@ -22,7 +22,7 @@ function SellItem() {
 
     useEffect(() => {
         const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://localhost:5001/refreshHub")
+            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
                 .configureLogging(LogLevel.Information)
                 .withAutomaticReconnect()
                 .build()
