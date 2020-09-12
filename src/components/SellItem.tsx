@@ -1,17 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { useHistory } from 'react-router-dom';
+
 import AuthService from '../services/AuthService';
 import axios from 'axios';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 function SellItem() {
     const [itemName, setItemName] = useState("");
     const [itemDescription, setItemDescription] = useState("");
     const [price, setPrice] = useState("");
     const [image, setImage] = useState<FileList | null>(null);
+
+    const [hubConnection, setHubConnection] = useState<HubConnection>();
+
+    let history = useHistory();
+
+    useEffect(() => {
+        const createHubConnection = async () => {
+            const conn = new HubConnectionBuilder().withUrl("https://localhost:5001/refreshHub")
+                .configureLogging(LogLevel.Information)
+                .withAutomaticReconnect()
+                .build()
+
+            try {
+                await conn.start();
+                console.log("Real-time connection to server established.")
+            } catch (error) {
+                console.log("Couldn't establish a real-time connection to the server!");
+            }
+
+            setHubConnection(conn);
+        };
+
+        createHubConnection();
+    }, []);
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
@@ -27,11 +54,13 @@ function SellItem() {
         }
         
 
-        axios.post('https://bookversity-backend.azurewebsites.net/Item/Create', formData, {
+        axios.post('https://bookversity-backend.azurewebsites.net/api/Item/Create', formData, {
             headers: AuthService.getImgHeader()
         }).then((res) => {
+            hubConnection?.send("refresh");
             console.log(res.data.id);
-            window.location.href = '/';
+            //window.location.href = '/';
+            history.push(`/item/${res.data.id}`);
         })
     };
 

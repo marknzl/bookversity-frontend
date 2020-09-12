@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useParams, useHistory} from "react-router-dom";
 
-//import AuthService from '../services/AuthService';
+import AuthService from '../services/AuthService';
 import IItem from '../shared/IItem';
 import CartService from '../services/CartService';
 
@@ -47,14 +47,24 @@ function ViewItem() {
             </div>
         )
     } else {
+        let button = <button id={item.data.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button>
+
+        if (AuthService.isLoggedIn()) {
+            if (item.data.sellerId == AuthService.getUserId()) {
+                button = <button id={item.data.id} disabled className="btn btn-success btn-lg btn-block">This is your listing</button>
+            }
+        }
+
         return (
             <Container>
                 <Row>
                     <Col>
                         <div className="card mt-5">
-                            <h5 className="card-header">Item details</h5>
+                            <h5 className="card-header">
+                                Item details: Listing ID #{item.data.id}
+                            </h5>
                             <div className="card-body">
-                                <div className="col-sm-4 mt-3 mb-3">
+                                <div className="col-sm-4 mt-3 mb-3 mx-auto">
                                     <div className="card">
                                         <img className="card-img-top" src={item.data.itemImageUrl}></img>
                                         <div className="card-body">
@@ -62,7 +72,8 @@ function ViewItem() {
                                             <p className="card-text">Price: ${item.data.price}</p>
                                             <p className="card-text"><strong>Description:</strong> {item.data.itemDescription}</p>
                                             <p className="card-text"><small className="text-muted">Created: {new Date(Date.parse(item.data.timeCreated)).toLocaleDateString("en-us")}</small></p>
-                                            <button id={item.data.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button>
+                                            {/* <button id={item.data.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button> */}
+                                            {button}
                                         </div>
                                     </div>
                                 </div>

@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { Link, useHistory } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
 
-function MyNavbar() {
-    let token = localStorage.getItem("jwt");
+interface INavbarProps {
+    LoggedIn: boolean
+    SetLoggedInStatus: (status: boolean) => void;
+}
+
+function MyNavbar(props: INavbarProps) {
     let history = useHistory();
 
     const logout = () => {
         AuthService.logout();
-        window.location.href = '/';
+        props.SetLoggedInStatus(false);
+        history.push('/');
     }
 
     const navigate = (e: any) => {
@@ -19,7 +24,7 @@ function MyNavbar() {
         history.push('/');
     };
 
-    if (token === null) {
+    if (!props.LoggedIn) {
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -37,9 +42,6 @@ function MyNavbar() {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        {/* <Nav.Link as={Link} to="/cart">Cart ({cartCount})</Nav.Link>
-                        <Nav.Link as={Link} to="/myaccount">My Account</Nav.Link>
-                        <Nav.Link as={Link} to="/sellitem">Sell item</Nav.Link> */}
                         </Nav>
                         <Nav>
                             <Nav.Link as={Link} to="/login">Login</Nav.Link>

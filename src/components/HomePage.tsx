@@ -10,6 +10,8 @@ import ItemCard from './ItemCard';
 
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
+import AuthService from '../services/AuthService';
+
 function HomePage() {
     useEffect(() => {
         fetchItems();
@@ -61,7 +63,7 @@ function HomePage() {
     }
 
     const updateFunc = () => {
-        hubConnection?.send("refresh");
+        hubConnection?.invoke("refresh");
         fetchItems();
     };
 
@@ -79,9 +81,18 @@ function HomePage() {
             }
 
             let item = items.data[i];
-            Items.push(
-                <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
-            )
+
+            if (AuthService.isLoggedIn()) {
+                if (AuthService.getUserId() !== item.sellerId) {
+                    Items.push(
+                        <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                    )
+                }
+            } else {
+                Items.push(
+                    <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                )
+            }
         }
     }   
 

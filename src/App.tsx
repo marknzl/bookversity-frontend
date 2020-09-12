@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from './components/MyNavbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -10,17 +10,27 @@ import SellItem from './components/SellItem';
 import Login from './components/Login';
 
 function App() {
+  const [loggedIn, setLoggedInStatus] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("jwt") !== null) {
+      setLoggedInStatus(true);
+    }
+  }, []);
+
   return (
     <Router>
       <div>
-          <MyNavbar />
+          <MyNavbar SetLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)} LoggedIn={loggedIn} />
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/cart" component={Cart} />
             <Route path="/myaccount" component={MyAccount}></Route>
             <Route path="/item/:id" component={ViewItem}></Route>
             <Route path="/sellitem" component={SellItem}></Route>
-            <Route path="/login" component={Login}></Route>
+            <Route path="/login">
+              <Login SetLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)}/>
+            </Route>
           </Switch>
       </div>
     </Router>

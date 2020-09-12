@@ -2,6 +2,7 @@ import axios from 'axios';
 import AuthService from './AuthService';
 
 const API_URL = "https://bookversity-backend.azurewebsites.net/api/";
+//const API_URL = "https://localhost:5001/api/";
 
 function addToCart(itemId: number) {
     return axios.post(API_URL + `Cart/Add?itemId=${itemId}`, {}, {

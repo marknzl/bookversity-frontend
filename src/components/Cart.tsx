@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import AuthService from '../services/AuthService';
+import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 
 interface ICartItems {
     loading: boolean;
@@ -38,6 +39,41 @@ function Cart() {
         });
     };
 
+    const [hubConnection, setHubConnection] = useState<HubConnection>();
+
+    useEffect(() => {
+        const createHubConnection = async () => {
+            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+                .configureLogging(LogLevel.Information)
+                .withAutomaticReconnect()
+                .build()
+
+            try {
+                await conn.start();
+                console.log("Real-time connection to server established.")
+            } catch (error) {
+                console.log("Couldn't establish a real-time connection to the server!");
+            }
+
+            setHubConnection(conn);
+        };
+
+        createHubConnection();
+    }, []);
+
+    const removeFromCart = async (e: any) => {
+        let itemId = e.target.id;
+        await fetch(`https://bookversity-backend.azurewebsites.net/api/Cart/Remove?itemId=${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `${AuthService.getAuthHeader().Authorization}`
+            },
+        });
+
+        hubConnection?.invoke("refresh");
+        fetchCartItems();
+    };
+
     if (!AuthService.isLoggedIn()) {
         return (
             <div>
@@ -58,12 +94,13 @@ function Cart() {
                 total += Number(currentItem.price);
 
                 Items.push(
-                    <div className="col-sm-4 mt-3 mb-3">
+                    <div className="col-sm-4 mt-3 mb-3 mx-auto">
                         <div className="card">
                             <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
                             <div className="card-body">
                                 <h5 className="card-title">{currentItem.itemName}</h5>
-                                <p className="card-text">Price: ${currentItem.price}</p> 
+                                <p className="card-text">Price: ${currentItem.price}</p>
+                                <button id={currentItem.id} onClick={removeFromCart} className="btn btn-danger btn-block btn-large">Remove from cart</button> 
                             </div>
                         </div>
                     </div>

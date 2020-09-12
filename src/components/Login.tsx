@@ -6,12 +6,18 @@ import Col from 'react-bootstrap/Col';
 
 import AuthService from '../services/AuthService';
 
-function Login() {
+import { useHistory } from 'react-router-dom';
+
+interface ILoggedInStatus {
+    SetLoggedInStatus: (status: boolean) => void;
+}
+
+function Login(props: ILoggedInStatus) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginMsg, setLoginMsg] = useState("");
 
-    //const history = useHistory();
+    const history = useHistory();
 
     const onChangeEmail = (e: any) => {
         const email = e.target.value;
@@ -27,9 +33,11 @@ function Login() {
         e.preventDefault();
 
         AuthService.login(email, password).then((res) => {
-            localStorage.setItem("jwt", res.data);
-            window.location.href = '/';
-            //history.push('/');
+            localStorage.setItem("jwt", res.data.jwtToken);
+            localStorage.setItem("userId", res.data.userId);
+            //window.location.href = '/';
+            props.SetLoggedInStatus(true);
+            history.push('/');
         },
         (error) => {
             setLoginMsg("Invalid login!")

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = "https://bookversity-backend.azurewebsites.net/api";
+//const API_URL = "https://localhost:5001/api";
 
 function register(email: string, firstName: string, lastName: string, password: string) {
     return axios.post(API_URL + "/User/Register", {
@@ -20,10 +21,15 @@ function login(email: string, password: string) {
 
 function logout() {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("userId");
 }
 
 function isLoggedIn() {
     return localStorage.getItem("jwt") !== null;
+}
+
+function getUserId() {
+    return localStorage.getItem("userId");
 }
 
 function getAuthHeader() {
@@ -42,5 +48,6 @@ export default {
     logout,
     isLoggedIn,
     getAuthHeader,
-    getImgHeader
+    getImgHeader,
+    getUserId
 };
