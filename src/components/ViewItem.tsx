@@ -53,6 +53,8 @@ function ViewItem() {
             if (item.data.sellerId == AuthService.getUserId()) {
                 button = <button id={item.data.id} disabled className="btn btn-success btn-lg btn-block">This is your listing</button>
             }
+        } else {
+            button = <button id={item.data.id} className="btn btn-success btn-lg btn-block">Login to add cart</button>
         }
 
         return (
