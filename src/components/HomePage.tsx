@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
 import IHomePageItems from '../shared/IHomePageItems';
 import ItemCard from './ItemCard';
+
+import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
 function HomePage() {
     useEffect(() => {
@@ -16,6 +20,32 @@ function HomePage() {
         data: null,
         error: false
     });
+
+    const [hubConnection, setHubConnection] = useState<HubConnection>();
+
+    useEffect(() => {
+        const createHubConnection = async () => {
+            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+                .configureLogging(LogLevel.Information)
+                .withAutomaticReconnect()
+                .build()
+
+            try {
+                conn.on("refresh", () => {
+                    fetchItems();
+                });
+
+                await conn.start();
+                console.log("Real-time connection to server established.")
+            } catch (error) {
+                console.log("Couldn't establish a real-time connection to the server!");
+            }
+
+            setHubConnection(conn);
+        };
+
+        createHubConnection();
+    }, []);
 
     const fetchItems = async () => {
         const fItems = await fetch(
@@ -45,7 +75,7 @@ function HomePage() {
 
             let item = items.data[i];
             Items.push(
-                <ItemCard ItemName={item.itemName} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                <ItemCard ItemName={item.itemName} UpdateFunc={fetchItems} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
             )
         }
     }   
