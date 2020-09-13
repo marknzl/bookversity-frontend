@@ -8,6 +8,7 @@ import MyAccount from './components/MyAccount';
 import ViewItem from './components/ViewItem';
 import SellItem from './components/SellItem';
 import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
   const [loggedIn, setLoggedInStatus] = useState<boolean>(false);
@@ -30,6 +31,9 @@ function App() {
             <Route path="/sellitem" component={SellItem}></Route>
             <Route path="/login">
               <Login SetLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)}/>
+            </Route>
+            <Route path="/register">
+              <Register />
             </Route>
           </Switch>
       </div>

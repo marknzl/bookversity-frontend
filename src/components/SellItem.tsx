@@ -57,7 +57,7 @@ function SellItem() {
         axios.post('https://bookversity-backend.azurewebsites.net/api/Item/Create', formData, {
             headers: AuthService.getImgHeader()
         }).then((res) => {
-            hubConnection?.send("refresh");
+            hubConnection?.invoke("refresh");
             console.log(res.data.id);
             //window.location.href = '/';
             history.push(`/item/${res.data.id}`);

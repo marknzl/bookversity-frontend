@@ -23,6 +23,8 @@ function HomePage() {
         error: false
     });
 
+    const [searchTerm, setSearchTerm] = useState<string | null>("");
+
     const [hubConnection, setHubConnection] = useState<HubConnection>();
 
     useEffect(() => {
@@ -65,6 +67,11 @@ function HomePage() {
     const updateFunc = () => {
         hubConnection?.invoke("refresh");
         fetchItems();
+    };
+
+    const onSearchChange = (e: any) => {
+        console.log(e.target.value);
+        setSearchTerm(e.target.value);
     };
 
     var Items: JSX.Element[] = [];
@@ -112,6 +119,9 @@ function HomePage() {
         return (
             <div className="container">
                 <div className="row">
+                    <div className="col-sm-12">
+                        <input className="form-control mt-3 mb-3" placeholder="Search..." onChange={onSearchChange}></input>
+                    </div>
                     {Items}
                 </div>
             </div>

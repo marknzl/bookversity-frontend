@@ -31,7 +31,7 @@ function MyNavbar(props: INavbarProps) {
                     <Navbar.Brand onClick={navigate}>
                     <img
                             alt=""
-                            src="logo192.png"
+                            src="testlogo.png"
                             width="30"
                             height="30"
                             className="d-inline-block align-top"
@@ -44,6 +44,7 @@ function MyNavbar(props: INavbarProps) {
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                         </Nav>
                         <Nav>
+                            <Nav.Link as={Link} to="/register">Register</Nav.Link>
                             <Nav.Link as={Link} to="/login">Login</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
@@ -57,7 +58,7 @@ function MyNavbar(props: INavbarProps) {
                     <Navbar.Brand onClick={navigate}>
                     <img
                             alt=""
-                            src="logo192.png"
+                            src="testlogo.png"
                             width="30"
                             height="30"
                             className="d-inline-block align-top"
