@@ -94,7 +94,7 @@ function Cart() {
                 total += Number(currentItem.price);
 
                 Items.push(
-                    <div className="col-sm-4 mt-3 mb-3 mx-auto">
+                    <div className="col-sm-4 mt-3 mb-3">
                         <div className="card">
                             <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
                             <div className="card-body">
@@ -114,7 +114,12 @@ function Cart() {
                             <div className="card mt-5">
                                 <h5 className="card-header">Your Cart:</h5>
                                 <div className="card-body">
-                                    {Items}
+                                    <div className="container">
+                                        <div className="row">
+                                            {Items}
+                                        </div>
+                                    </div>
+                                    {/* {Items} */}
                                     <hr />
                                     <div className="mt-3">
                                         <h5>Total: ${total}</h5>

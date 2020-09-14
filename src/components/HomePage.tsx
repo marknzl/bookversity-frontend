@@ -24,6 +24,7 @@ function HomePage() {
     });
 
     const [searchTerm, setSearchTerm] = useState<string | null>("");
+    const [faculties, setFaculties] = useState<Array<string>>([]);
 
     const [hubConnection, setHubConnection] = useState<HubConnection>();
 
@@ -64,14 +65,40 @@ function HomePage() {
         });
     }
 
+    const searchItems = async () => {
+        const sItems = await fetch(
+            `https://bookversity-backend.azurewebsites.net/api/Item/Search?itemName=${searchTerm}`
+        );
+
+        const allSearchItems = await sItems.json();
+        setItems({
+            loading: false,
+            data: allSearchItems,
+            error: false
+        });
+    };
+
     const updateFunc = () => {
         hubConnection?.invoke("refresh");
         fetchItems();
     };
 
     const onSearchChange = (e: any) => {
-        console.log(e.target.value);
-        setSearchTerm(e.target.value);
+        if (e.target.value === "") {
+            fetchItems();
+        } else {
+            setSearchTerm(e.target.value);
+            searchItems();
+        }
+    };
+
+    const onFacultyClick = (e: any) => {
+        e.preventDefault();
+
+        let newFaculties = faculties;
+        newFaculties.push(e.currentTarget.getAttribute("href"))
+        setFaculties(newFaculties);
+        console.log(newFaculties);
     };
 
     var Items: JSX.Element[] = [];
@@ -101,7 +128,7 @@ function HomePage() {
                 )
             }
         }
-    }   
+    }
 
     if (items.loading) {
         return (
@@ -117,12 +144,44 @@ function HomePage() {
         ) 
     } else {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row">
-                    <div className="col-sm-12">
-                        <input className="form-control mt-3 mb-3" placeholder="Search..." onChange={onSearchChange}></input>
+                    <div className="col-sm-3">
+                        <div className="card mt-3">
+                            <h5 className="card-header">Filters</h5>
+                            <div className="card-body">
+                                <label htmlFor="search-bar">Search:</label>
+                                <input className="form-control mb-3" placeholder="Search..." name="search-bar" onChange={onSearchChange}></input>
+
+                                {/* <label>By Faculty:</label>
+                                <div>
+                                    <a href="Science" onClick={onFacultyClick}><span className="ml-1 badge badge-secondary">Science<button type="button" className="close"></button></span></a>
+                                    <span className="ml-1 badge badge-secondary">Engineering</span>
+                                    <span className="ml-1 badge badge-secondary">Business</span>
+                                    <span className="ml-1 badge badge-secondary">Arts</span>
+                                    <span className="ml-1 badge badge-secondary">Medical and Health Science</span>
+                                    <span className="ml-1 badge badge-secondary">Law</span>
+                                    <span className="ml-1 badge badge-secondary">Education and Social Work</span>
+                                </div> */}
+                            </div>
+                        </div>
                     </div>
-                    {Items}
+                    <div className="col-sm-9">
+                        <div className="container">
+                            <div className="row">
+                                <div className="card mt-3">
+                                    <h5 className="card-header">Items for sale</h5>
+                                    <div className="card-body">
+                                        <div className="container">
+                                            <div className="row">
+                                                {Items}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
