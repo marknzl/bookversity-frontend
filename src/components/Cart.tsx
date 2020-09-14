@@ -6,21 +6,16 @@ import Col from 'react-bootstrap/Col';
 
 import AuthService from '../services/AuthService';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-
-interface ICartItems {
-    loading: boolean;
-    data: any;
-    error: boolean;
-}
+import ICartResponse from '../types/ICartResponse';
 
 function Cart() {
     useEffect(() => {
         fetchCartItems();
     }, []);
 
-    const [cartItems, setCartItems] = useState<ICartItems>({
+    const [cartResponse, setCartResponse] = useState<ICartResponse>({
         loading: true,
-        data: null,
+        cartItems: null,
         error: false
     });
 
@@ -31,11 +26,10 @@ function Cart() {
             },
         });
 
-        const allCartItems = await cItems.json();
-        setCartItems({
+        setCartResponse({
             loading: false,
             error: false,
-            data: allCartItems
+            cartItems: await cItems.json()
         });
     };
 
@@ -81,7 +75,7 @@ function Cart() {
             </div>
         )
     } else {
-        if (cartItems.loading) {
+        if (cartResponse.loading) {
             return (
                 <h4>Loading..</h4>
             )
@@ -89,22 +83,24 @@ function Cart() {
             var Items: JSX.Element[] = [];
             let total = 0;
 
-            for (let i = 0; i < cartItems.data.length; i++) {
-                let currentItem = cartItems.data[i];
-                total += Number(currentItem.price);
+            if (cartResponse.cartItems !== null) {
+                for (let i = 0; i < cartResponse.cartItems.length; i++) {
+                    let currentItem = cartResponse.cartItems[i];
+                    total += Number(currentItem.price);
 
-                Items.push(
-                    <div className="col-sm-4 mt-3 mb-3">
-                        <div className="card">
-                            <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
-                            <div className="card-body">
-                                <h5 className="card-title">{currentItem.itemName}</h5>
-                                <p className="card-text">Price: ${currentItem.price}</p>
-                                <button id={currentItem.id} onClick={removeFromCart} className="btn btn-danger btn-block btn-large">Remove from cart</button> 
+                    Items.push(
+                        <div className="col-sm-4 mt-3 mb-3">
+                            <div className="card">
+                                <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
+                                <div className="card-body">
+                                    <h5 className="card-title">{currentItem.itemName}</h5>
+                                    <p className="card-text">Price: ${currentItem.price}</p>
+                                    <button id={currentItem.id} onClick={removeFromCart} className="btn btn-danger btn-block btn-large">Remove from cart</button> 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                );
+                    );
+                }
             }
 
             return (

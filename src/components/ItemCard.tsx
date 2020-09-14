@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthService from '../services/AuthService';
 import CartService from '../services/CartService';
 import { useHistory } from "react-router-dom";
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-
-interface IItemCardProps {
-    ItemName: string;
-    ImageUrl: string;
-    Price: number;
-    Id: string;
-    UpdateFunc: () => void;
-}
+import IItemCardProps from '../types/IItemCardProps';
 
 function ItemCard(props: IItemCardProps) {
     let buyButton = null;
@@ -23,29 +15,28 @@ function ItemCard(props: IItemCardProps) {
 
         CartService.addToCart(e.target.id).then((res) => {
             //console.log(res);
-            props.UpdateFunc();
+            props.updateFunc();
         });
     }
 
     const navigate = (e: any) => {
         e.preventDefault();
-
-        history.push(`/item/${props.Id}`);
+        history.push(`/item/${props.item.id}`);
     };
 
     if (AuthService.isLoggedIn()) {
-        buyButton = <button id={props.Id} className="btn btn-success btn-block btn-lg" onClick={addToCart}>Add to cart</button>
+        buyButton = <button id={props.item.id} className="btn btn-success btn-block btn-lg" onClick={addToCart}>Add to cart</button>
     } else {
-        buyButton = <button id={props.Id} className="btn btn-success btn-block btn-lg" disabled onClick={addToCart}>Login to add to cart!</button>
+        buyButton = <button id={props.item.id} className="btn btn-success btn-block btn-lg" disabled onClick={addToCart}>Login to add to cart!</button>
     }
 
     return (
         <div className="col-sm-4 mt-3 mb-3">
             <div className="card">
-                <img src={props.ImageUrl} alt={props.ItemName} className="card-img-top"></img>
+                <img src={props.item.itemImageUrl} alt={props.item.itemName} className="card-img-top"></img>
                 <div className="card-body">
-                    <h5 className="card-title"><a href={`/item/${props.Id}`} onClick={navigate}>{props.ItemName}</a></h5>
-                    <p className="card-text">Price: ${props.Price}</p> 
+                    <h5 className="card-title"><a href={`/item/${props.item.id}`} onClick={navigate}>{props.item.itemName}</a></h5>
+                    <p className="card-text">Price: ${props.item.price}</p> 
                     {buyButton}
                 </div>
             </div>

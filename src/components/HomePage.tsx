@@ -5,27 +5,26 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import IHomePageItems from '../shared/IHomePageItems';
 import ItemCard from './ItemCard';
 
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
 import AuthService from '../services/AuthService';
+import IHomePageResponse from '../types/Response Types/IHomePageResponse';
 
 function HomePage() {
     useEffect(() => {
         fetchItems();
     }, []);
 
-    const [items, setItems] = useState<IHomePageItems>({
+    const [homePageResponse, setHomePageResponse] = useState<IHomePageResponse>({
         loading: true,
-        data: null,
+        items: null,
         error: false
     });
 
     const [searchTerm, setSearchTerm] = useState<string | null>("");
     const [faculties, setFaculties] = useState<Array<string>>([]);
-
     const [hubConnection, setHubConnection] = useState<HubConnection>();
 
     useEffect(() => {
@@ -34,7 +33,6 @@ function HomePage() {
                 .configureLogging(LogLevel.Information)
                 .withAutomaticReconnect()
                 .build()
-
             try {
                 conn.on("refresh", () => {
                     fetchItems();
@@ -57,12 +55,11 @@ function HomePage() {
             "https://bookversity-backend.azurewebsites.net/api/Item/Latest10"
         );
 
-        const allItems = await fItems.json();
-        setItems({
+        setHomePageResponse({
             loading: false,
-            data: allItems,
+            items: await fItems.json(),
             error: false
-        });
+        })
     }
 
     const searchItems = async () => {
@@ -70,10 +67,9 @@ function HomePage() {
             `https://bookversity-backend.azurewebsites.net/api/Item/Search?itemName=${searchTerm}`
         );
 
-        const allSearchItems = await sItems.json();
-        setItems({
+        setHomePageResponse({
             loading: false,
-            data: allSearchItems,
+            items: await sItems.json(),
             error: false
         });
     };
@@ -103,10 +99,10 @@ function HomePage() {
 
     var Items: JSX.Element[] = [];
 
-    if (items.data != null) {
+    if (homePageResponse.items != null) {
 
-        for (let i = 0; i < items.data.length; i++) {
-            if (items.data === null) {
+        for (let i = 0; i < homePageResponse.items.length; i++) {
+            if (homePageResponse.items === null) {
                 return (
                     <div>
 
@@ -114,23 +110,23 @@ function HomePage() {
                 )
             }
 
-            let item = items.data[i];
+            let item = homePageResponse?.items[i];
 
             if (AuthService.isLoggedIn()) {
                 if (AuthService.getUserId() !== item.sellerId) {
                     Items.push(
-                        <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                        <ItemCard item={item} updateFunc={updateFunc}></ItemCard>
                     )
                 }
             } else {
                 Items.push(
-                    <ItemCard ItemName={item.itemName} UpdateFunc={updateFunc} ImageUrl={item.itemImageUrl} Price={item.price} Id={item.id}></ItemCard>
+                    <ItemCard item={item} updateFunc={updateFunc}></ItemCard>
                 )
             }
         }
     }
 
-    if (items.loading) {
+    if (homePageResponse.loading) {
         return (
             <div>
                 <Container>

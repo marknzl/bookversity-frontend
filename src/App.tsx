@@ -22,7 +22,7 @@ function App() {
   return (
     <Router>
       <div>
-          <MyNavbar SetLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)} LoggedIn={loggedIn} />
+          <MyNavbar setLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)} loggedIn={loggedIn} />
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/cart" component={Cart} />

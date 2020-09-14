@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { Link, useHistory } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
-
-interface INavbarProps {
-    LoggedIn: boolean
-    SetLoggedInStatus: (status: boolean) => void;
-}
+import INavbarProps from '../types/INavbarProps';
 
 function MyNavbar(props: INavbarProps) {
     let history = useHistory();
 
     const logout = () => {
         AuthService.logout();
-        props.SetLoggedInStatus(false);
+        props.setLoggedInStatus(false);
         history.push('/');
     }
 
@@ -24,7 +20,7 @@ function MyNavbar(props: INavbarProps) {
         history.push('/');
     };
 
-    if (!props.LoggedIn) {
+    if (!props.loggedIn) {
         return (
             <div>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
