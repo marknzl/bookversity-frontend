@@ -3,11 +3,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import AccountOverview from './AccountOverview';
 import Orders from './Orders';
+import MyItems from './MyItems';
+import AccountOverview from './AccountOverview';
 
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import MyItems from './MyItems';
 
 function MyAccount() {
     let history = useHistory();
@@ -58,10 +58,10 @@ function MyAccount() {
                                             <Route exact path="/myaccount">
                                                 <AccountOverview />
                                             </Route>
-                                            <Route path="/myaccount/myitems">
+                                            <Route exact path="/myaccount/myitems">
                                                 <MyItems />
                                             </Route>
-                                            <Route path="/myaccount/orders">
+                                            <Route exact path="/myaccount/orders">
                                                 <Orders />
                                             </Route>
                                         </Switch>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import IItem from '../shared/IItem';
 import AuthService from '../services/AuthService';
 import { useHistory } from "react-router-dom";
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import IMyItemsResponse from '../types/Response Types/IMyItemsResponse';
 
 function MyItems() {
     useEffect(() => {
@@ -11,9 +11,9 @@ function MyItems() {
 
     let history = useHistory();
 
-    const [myItems, setMyItems] = useState<IItem>({
+    const [myItemsResponse, setMyItemsResponse] = useState<IMyItemsResponse>({
         loading: true,
-        data: null,
+        myItems: null,
         error: false
     });
 
@@ -49,10 +49,9 @@ function MyItems() {
             }
         });
 
-        const allMyItems = await mItems.json();
-        setMyItems({
+        setMyItemsResponse({
             loading: false,
-            data: allMyItems,
+            myItems: await mItems.json(),
             error: false
         });
     };
@@ -77,9 +76,9 @@ function MyItems() {
 
     var Items: JSX.Element[] = [];
 
-    if (!myItems.loading) {
-        for (let i = 0; i < myItems.data.length; i++) {
-            let currentItem = myItems.data[i];
+    if (!myItemsResponse.loading && myItemsResponse.myItems !== null) {
+        for (let i = 0; i < myItemsResponse.myItems.length; i++) {
+            let currentItem = myItemsResponse.myItems[i];
 
             let button: JSX.Element = <button id={currentItem.id} onClick={deleteItem} className="btn btn-danger btn-lg btn-block">Delete</button>
 
@@ -104,7 +103,7 @@ function MyItems() {
         }
     }
 
-    if (myItems.loading) {
+    if (myItemsResponse.loading) {
         return (
             <div className="card">
                 <h5 className="card-header">My Items</h5>
