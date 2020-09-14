@@ -71,7 +71,7 @@ function MyNavbar(props: INavbarProps) {
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                         <Nav.Link as={Link} to="/cart">View Cart</Nav.Link>
                         <Nav.Link as={Link} to="/myaccount">My Account</Nav.Link>
-                        <Nav.Link as={Link} to="/sellitem">Sell item</Nav.Link>
+                        <Nav.Link as={Link} to="/sellitem">Sell item +</Nav.Link>
                         </Nav>
                         <Nav>
                             <Nav.Link onClick={logout}>Logout</Nav.Link>
