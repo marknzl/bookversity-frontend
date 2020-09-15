@@ -8,8 +8,9 @@ import MyItems from './MyItems';
 import AccountOverview from './AccountOverview';
 
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import IMyAccountProps from '../types/Props/IMyAccountProps';
 
-function MyAccount() {
+function MyAccount(props: IMyAccountProps) {
     let history = useHistory();
 
     const myAccount = (e: any) => {
@@ -59,7 +60,7 @@ function MyAccount() {
                                                 <AccountOverview />
                                             </Route>
                                             <Route exact path="/myaccount/myitems">
-                                                <MyItems />
+                                                <MyItems hubConnection={props.hubConnection} />
                                             </Route>
                                             <Route exact path="/myaccount/orders">
                                                 <Orders />

@@ -11,7 +11,7 @@ const fetchItem = async(itemId: string) => {
 }
 
 const searchItems = async(searchTerm: string | null) => {
-    return await fetch(API_URL + "/Item/Search?" + searchItems);
+    return await fetch(API_URL + "/Item/Search?itemName=" + searchTerm);
 }
 
 const deleteItem = async(itemId: string) => {

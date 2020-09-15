@@ -9,40 +9,45 @@ import AuthService from '../services/AuthService';
 import CartService from '../services/CartService';
 import IViewItemResponse from '../types/Response Types/IViewItemResponse';
 import ItemService from '../services/ItemService';
-import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
+// import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
+import IViewItemProps from '../types/Props/IViewItemProps';
 
-function ViewItem() {
+function ViewItem(props: IViewItemProps) {
     let { id } = useParams();
     let history = useHistory();
 
     useEffect(() => {
+        props.hubConnection?.on("refresh", () => {
+            fetchItem();
+        });
+
         fetchItem();
     }, []);
     
-    const [hubConnection, setHubConnection] = useState<HubConnection>();
+    // const [hubConnection, setHubConnection] = useState<HubConnection>();
 
-    useEffect(() => {
-        const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build()
-            try {
-                conn.on("refresh", () => {
-                    fetchItem();
-                });
+    // useEffect(() => {
+    //     const createHubConnection = async () => {
+    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+    //             .configureLogging(LogLevel.Information)
+    //             .withAutomaticReconnect()
+    //             .build()
+    //         try {
+    //             conn.on("refresh", () => {
+    //                 fetchItem();
+    //             });
 
-                await conn.start();
-                console.log("Real-time connection to server established.")
-            } catch (error) {
-                console.log("Couldn't establish a real-time connection to the server!");
-            }
+    //             await conn.start();
+    //             console.log("Real-time connection to server established.")
+    //         } catch (error) {
+    //             console.log("Couldn't establish a real-time connection to the server!");
+    //         }
 
-            setHubConnection(conn);
-        };
+    //         setHubConnection(conn);
+    //     };
 
-        createHubConnection();
-    }, []);
+    //     createHubConnection();
+    // }, []);
 
     const [viewItemResponse, setViewItemResponse] = useState<IViewItemResponse>({
         loading: true,
@@ -63,7 +68,7 @@ function ViewItem() {
     const addToCart = (e: any) => {
         if (viewItemResponse.item !== null) {
             CartService.addToCart(Number(viewItemResponse.item.id)).then((res) => {
-                hubConnection?.invoke("refresh");
+                props.hubConnection?.invoke("refresh");
                 history.push('/cart')
             });
         }
@@ -86,7 +91,11 @@ function ViewItem() {
                     button = <button id={viewItemResponse.item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
                 }
             } else {
-                button = <button id={viewItemResponse.item.id} className="btn btn-success btn-lg btn-block" disabled>Login to add cart</button>
+                if (viewItemResponse.item.inUserCart) {
+                    button = <button id={viewItemResponse.item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
+                } else {
+                    button = <button id={viewItemResponse.item.id} className="btn btn-success btn-lg btn-block" disabled>Login to add cart</button>
+                }
             }
 
             return (

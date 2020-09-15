@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import AuthService from '../services/AuthService';
+// import AuthService from '../services/AuthService';
 import { useHistory } from "react-router-dom";
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+// import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import IMyItemsResponse from '../types/Response Types/IMyItemsResponse';
 import ItemService from '../services/ItemService';
+import IMyItemsProps from '../types/Props/IMyItemsProps';
 
-function MyItems() {
+function MyItems(props: IMyItemsProps) {
     useEffect(() => {
+        props.hubConnection?.on("refresh", () => {
+            fetchMyItems();
+        });
+
         fetchMyItems();
     }, []);
 
@@ -18,30 +23,30 @@ function MyItems() {
         error: false
     });
 
-    const [hubConnection, setHubConnection] = useState<HubConnection>();
+    // const [hubConnection, setHubConnection] = useState<HubConnection>();
 
-    useEffect(() => {
-        const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build()
+    // useEffect(() => {
+    //     const createHubConnection = async () => {
+    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+    //             .configureLogging(LogLevel.Information)
+    //             .withAutomaticReconnect()
+    //             .build()
 
-            try {
-                await conn.start();
-                conn.on('refresh', () => {
-                    fetchMyItems();
-                });
-                console.log("Real-time connection to server established.")
-            } catch (error) {
-                console.log("Couldn't establish a real-time connection to the server!");
-            }
+    //         try {
+    //             await conn.start();
+    //             conn.on('refresh', () => {
+    //                 fetchMyItems();
+    //             });
+    //             console.log("Real-time connection to server established.")
+    //         } catch (error) {
+    //             console.log("Couldn't establish a real-time connection to the server!");
+    //         }
 
-            setHubConnection(conn);
-        };
+    //         setHubConnection(conn);
+    //     };
 
-        createHubConnection();
-    }, []);
+    //     createHubConnection();
+    // }, []);
 
     const fetchMyItems = async () => {
         const mItems = await ItemService.myItems();
@@ -62,7 +67,7 @@ function MyItems() {
         let itemId = e.target.id;
         await ItemService.deleteItem(itemId);
 
-        hubConnection?.invoke('refresh');
+        props.hubConnection?.invoke('refresh');
         fetchMyItems();
     };
 
@@ -81,7 +86,7 @@ function MyItems() {
             }
 
             Items.push(
-                <div className="col-sm-4 mt-3">
+                <div key={currentItem.id} className="col-sm-4 mt-3">
                     <div className="card">
                         <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
                         <div className="card-body">

@@ -7,16 +7,21 @@ import Col from 'react-bootstrap/Col';
 
 import ItemCard from './ItemCard';
 
-import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
+//import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
 import AuthService from '../services/AuthService';
 import IHomePageResponse from '../types/Response Types/IHomePageResponse';
 import ItemService from '../services/ItemService';
+import IHomePageProps from '../types/Props/IHomePageProps';
 
-function HomePage() {
+function HomePage(props: IHomePageProps) {
     const [searchTerm, setSearchTerm] = useState<string | null>("");
     //const [facultyFilters, setFacultyFilters] = useState<string[]>([]);
 
+    props.hubConnection?.on("refresh", () => {
+        fetchItems();
+    });
+    
     useEffect(() => {
         if (searchTerm === "") { 
             fetchItems();
@@ -31,30 +36,30 @@ function HomePage() {
         error: false
     });
 
-    const [hubConnection, setHubConnection] = useState<HubConnection>();
+    // const [hubConnection, setHubConnection] = useState<HubConnection>();
 
-    useEffect(() => {
-        const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build()
-            try {
-                conn.on("refresh", () => {
-                    fetchItems();
-                });
+    // useEffect(() => {
+    //     const createHubConnection = async () => {
+    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+    //             .configureLogging(LogLevel.Information)
+    //             .withAutomaticReconnect()
+    //             .build()
+    //         try {
+    //             conn.on("refresh", () => {
+    //                 fetchItems();
+    //             });
 
-                await conn.start();
-                console.log("Real-time connection to server established.")
-            } catch (error) {
-                console.log("Couldn't establish a real-time connection to the server!");
-            }
+    //             await conn.start();
+    //             console.log("Real-time connection to server established.")
+    //         } catch (error) {
+    //             console.log("Couldn't establish a real-time connection to the server!");
+    //         }
 
-            setHubConnection(conn);
-        };
+    //         setHubConnection(conn);
+    //     };
 
-        createHubConnection();
-    }, []);
+    //     createHubConnection();
+    // }, []);
 
     const fetchItems = async () => {
         // const fItems = await fetch(
@@ -81,7 +86,7 @@ function HomePage() {
     };
 
     const updateFunc = () => {
-        hubConnection?.invoke("refresh");
+        props.hubConnection?.invoke("refresh");
         fetchItems();
     };
 
@@ -116,12 +121,12 @@ function HomePage() {
             if (AuthService.isLoggedIn()) {
                 if (AuthService.getUserId() !== item.sellerId) {
                     Items.push(
-                        <ItemCard item={item} updateFunc={updateFunc}></ItemCard>
+                        <ItemCard key={item.id} item={item} updateFunc={updateFunc}></ItemCard>
                     )
                 }
             } else {
                 Items.push(
-                    <ItemCard item={item} updateFunc={updateFunc}></ItemCard>
+                    <ItemCard key={item.id} item={item} updateFunc={updateFunc}></ItemCard>
                 )
             }
         }

@@ -1,4 +1,4 @@
-import IItem from "../shared/IItem";
+import IItem from "../../shared/IItem";
 
 interface IItemCardProps {
     item: IItem,
