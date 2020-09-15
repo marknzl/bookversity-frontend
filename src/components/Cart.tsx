@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import AuthService from '../services/AuthService';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import ICartResponse from '../types/ICartResponse';
+import CartService from '../services/CartService';
 
 function Cart() {
     useEffect(() => {
@@ -20,11 +21,7 @@ function Cart() {
     });
 
     const fetchCartItems = async () => {
-        const cItems = await fetch("https://bookversity-backend.azurewebsites.net/api/Cart/MyCart", {
-            headers: {
-                'Authorization': `${AuthService.getAuthHeader().Authorization}`
-            },
-        });
+        const cItems = await CartService.fetchCartItems();
 
         setCartResponse({
             loading: false,
@@ -57,12 +54,7 @@ function Cart() {
 
     const removeFromCart = async (e: any) => {
         let itemId = e.target.id;
-        await fetch(`https://bookversity-backend.azurewebsites.net/api/Cart/Remove?itemId=${itemId}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `${AuthService.getAuthHeader().Authorization}`
-            },
-        });
+        await CartService.removeFromCart(itemId);
 
         hubConnection?.invoke("refresh");
         fetchCartItems();

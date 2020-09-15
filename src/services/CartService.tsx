@@ -10,13 +10,31 @@ function addToCart(itemId: number) {
     });
 }
 
-function myCart() {
-    return axios.get(API_URL + 'Cart/MyCart', {
-        headers: AuthService.getAuthHeader()
+// function myCart() {
+//     return axios.get(API_URL + 'Cart/MyCart', {
+//         headers: AuthService.getAuthHeader()
+//     });
+// }
+
+const fetchCartItems = async() => {
+    return await fetch("https://bookversity-backend.azurewebsites.net/api/Cart/MyCart", {
+        headers: {
+            'Authorization': `${AuthService.getAuthHeader().Authorization}`
+        },
+    });
+}
+
+const removeFromCart = async(itemId: string) => {
+    await fetch(`https://bookversity-backend.azurewebsites.net/api/Cart/Remove?itemId=${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `${AuthService.getAuthHeader().Authorization}`
+        },
     });
 }
 
 export default {
     addToCart,
-    myCart
+    fetchCartItems,
+    removeFromCart
 };

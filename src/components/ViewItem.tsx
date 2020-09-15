@@ -8,6 +8,7 @@ import { useParams, useHistory} from "react-router-dom";
 import AuthService from '../services/AuthService';
 import CartService from '../services/CartService';
 import IViewItemResponse from '../types/Response Types/IViewItemResponse';
+import ItemService from '../services/ItemService';
 
 function ViewItem() {
     let { id } = useParams();
@@ -24,7 +25,7 @@ function ViewItem() {
     });
 
     const fetchItem = async () => {
-        const item = await fetch(`https://bookversity-backend.azurewebsites.net/api/Item/GetItem?id=${id}`);
+        const item = await ItemService.fetchItem(id);
 
         setViewItemResponse({
             loading: false,

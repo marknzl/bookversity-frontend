@@ -11,11 +11,19 @@ import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signal
 
 import AuthService from '../services/AuthService';
 import IHomePageResponse from '../types/Response Types/IHomePageResponse';
+import ItemService from '../services/ItemService';
 
 function HomePage() {
+    const [searchTerm, setSearchTerm] = useState<string | null>("");
+    //const [facultyFilters, setFacultyFilters] = useState<string[]>([]);
+
     useEffect(() => {
-        fetchItems();
-    }, []);
+        if (searchTerm === "") { 
+            fetchItems();
+        } else {
+            searchItems();
+        }
+    }, [searchTerm]);
 
     const [homePageResponse, setHomePageResponse] = useState<IHomePageResponse>({
         loading: true,
@@ -23,8 +31,6 @@ function HomePage() {
         error: false
     });
 
-    const [searchTerm, setSearchTerm] = useState<string | null>("");
-    const [faculties, setFaculties] = useState<Array<string>>([]);
     const [hubConnection, setHubConnection] = useState<HubConnection>();
 
     useEffect(() => {
@@ -51,9 +57,11 @@ function HomePage() {
     }, []);
 
     const fetchItems = async () => {
-        const fItems = await fetch(
-            "https://bookversity-backend.azurewebsites.net/api/Item/Latest10"
-        );
+        // const fItems = await fetch(
+        //     "https://bookversity-backend.azurewebsites.net/api/Item/Latest10"
+        // );
+
+        const fItems = await ItemService.latest10();
 
         setHomePageResponse({
             loading: false,
@@ -63,9 +71,7 @@ function HomePage() {
     }
 
     const searchItems = async () => {
-        const sItems = await fetch(
-            `https://bookversity-backend.azurewebsites.net/api/Item/Search?itemName=${searchTerm}`
-        );
+        const sItems = await ItemService.searchItems(searchTerm);
 
         setHomePageResponse({
             loading: false,
@@ -79,28 +85,23 @@ function HomePage() {
         fetchItems();
     };
 
-    const onSearchChange = (e: any) => {
-        if (e.target.value === "") {
-            fetchItems();
-        } else {
-            setSearchTerm(e.target.value);
-            searchItems();
-        }
-    };
+    // const onFacultyClick = (e: any) => {
+    //     e.preventDefault();
+    //     let faculty = e.currentTarget.getAttribute("href")
+    //     let newFaculties = facultyFilters;
 
-    const onFacultyClick = (e: any) => {
-        e.preventDefault();
+    //     newFaculties.push(faculty)
+    //     setFacultyFilters(facultyFilters);
+    //     console.log(facultyFilters);
+    // }
 
-        let newFaculties = faculties;
-        newFaculties.push(e.currentTarget.getAttribute("href"))
-        setFaculties(newFaculties);
-        console.log(newFaculties);
+    const handleSearchTermChange = (s: string | null) => {
+        setSearchTerm(s);
     };
 
     var Items: JSX.Element[] = [];
 
     if (homePageResponse.items != null) {
-
         for (let i = 0; i < homePageResponse.items.length; i++) {
             if (homePageResponse.items === null) {
                 return (
@@ -147,7 +148,7 @@ function HomePage() {
                             <h5 className="card-header">Filters</h5>
                             <div className="card-body">
                                 <label htmlFor="search-bar">Search:</label>
-                                <input className="form-control mb-3" placeholder="Search..." name="search-bar" onChange={onSearchChange}></input>
+                                <input className="form-control mb-3" placeholder="Search..." name="search-bar" onChange={e => handleSearchTermChange(e.target.value)}></input>
 
                                 {/* <label>By Faculty:</label>
                                 <div>

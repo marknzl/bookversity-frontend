@@ -16,6 +16,7 @@ function SellItem() {
     const [price, setPrice] = useState("");
     const [image, setImage] = useState<FileList | null>(null);
 
+    const [clickedButton, setClickedButton] = useState<boolean>(false);
     const [hubConnection, setHubConnection] = useState<HubConnection>();
 
     let history = useHistory();
@@ -42,6 +43,7 @@ function SellItem() {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
+        setClickedButton(true);
         
         let formData = new FormData();
 
@@ -53,16 +55,21 @@ function SellItem() {
             formData.append('image', image[0]);
         }
         
-
         axios.post('https://bookversity-backend.azurewebsites.net/api/Item/Create', formData, {
             headers: AuthService.getImgHeader()
         }).then((res) => {
             hubConnection?.invoke("refresh");
-            console.log(res.data.id);
+            //console.log(res.data.id);
             //window.location.href = '/';
             history.push(`/item/${res.data.id}`);
         })
     };
+
+    let button = <button type="submit" className="btn btn-primary btn-lg btn-block">Sell!</button>
+
+    if (clickedButton) {
+        button = <button type="submit" className="btn btn-primary btn-lg btn-block" disabled>Creating listing...</button>
+    }
 
     return (
         <div>
@@ -90,7 +97,8 @@ function SellItem() {
                                     <input type="file" accept="image/*" onChange={e => setImage(e.target.files)}></input>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary btn-lg btn-block">Sell!</button>
+                                {/* <button type="submit" className="btn btn-primary btn-lg btn-block">Sell!</button> */}
+                                {button}
                             </form>
                             </div>
                         </div>

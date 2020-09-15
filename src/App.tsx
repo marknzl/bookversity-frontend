@@ -30,7 +30,7 @@ function App() {
             <Route path="/item/:id" component={ViewItem}></Route>
             <Route path="/sellitem" component={SellItem}></Route>
             <Route path="/login">
-              <Login SetLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)}/>
+              <Login setLoggedInStatus={(ls: boolean) => setLoggedInStatus(ls)}/>
             </Route>
             <Route path="/register">
               <Register />

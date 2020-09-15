@@ -7,12 +7,9 @@ import Col from 'react-bootstrap/Col';
 import AuthService from '../services/AuthService';
 
 import { useHistory } from 'react-router-dom';
+import ILoginProps from '../types/ILoginProps';
 
-interface ILoggedInStatus {
-    SetLoggedInStatus: (status: boolean) => void;
-}
-
-function Login(props: ILoggedInStatus) {
+function Login(props: ILoginProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginMsg, setLoginMsg] = useState("");
@@ -35,8 +32,7 @@ function Login(props: ILoggedInStatus) {
         AuthService.login(email, password).then((res) => {
             localStorage.setItem("jwt", res.data.jwtToken);
             localStorage.setItem("userId", res.data.userId);
-            //window.location.href = '/';
-            props.SetLoggedInStatus(true);
+            props.setLoggedInStatus(true);
             history.push('/');
         },
         (error) => {

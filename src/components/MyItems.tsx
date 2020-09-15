@@ -3,6 +3,7 @@ import AuthService from '../services/AuthService';
 import { useHistory } from "react-router-dom";
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import IMyItemsResponse from '../types/Response Types/IMyItemsResponse';
+import ItemService from '../services/ItemService';
 
 function MyItems() {
     useEffect(() => {
@@ -43,11 +44,7 @@ function MyItems() {
     }, []);
 
     const fetchMyItems = async () => {
-        const mItems = await fetch("https://bookversity-backend.azurewebsites.net/api/Item/MyItems", {
-            headers: {
-                'Authorization': `${AuthService.getAuthHeader().Authorization}`
-            }
-        });
+        const mItems = await ItemService.myItems();
 
         setMyItemsResponse({
             loading: false,
@@ -63,12 +60,7 @@ function MyItems() {
 
     const deleteItem = async (e: any) => {
         let itemId = e.target.id;
-        await fetch(`https://bookversity-backend.azurewebsites.net/api/Item/DeleteItem?itemId=${itemId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `${AuthService.getAuthHeader().Authorization}`
-            },
-        });
+        await ItemService.deleteItem(itemId);
 
         hubConnection?.invoke('refresh');
         fetchMyItems();
