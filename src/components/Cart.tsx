@@ -5,14 +5,19 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import AuthService from '../services/AuthService';
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-import ICartResponse from '../types/ICartResponse';
+// import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
+import ICartResponse from '../types/Response Types/ICartResponse';
 import CartService from '../services/CartService';
+import IViewCartProps from '../types/Props/IViewCartProps';
 
-function Cart() {
+function Cart(props: IViewCartProps) {
     useEffect(() => {
         fetchCartItems();
     }, []);
+
+    props.hubConnection?.on("refresh", () => {
+        fetchCartItems();
+    });
 
     const [cartResponse, setCartResponse] = useState<ICartResponse>({
         loading: true,
@@ -30,33 +35,33 @@ function Cart() {
         });
     };
 
-    const [hubConnection, setHubConnection] = useState<HubConnection>();
+    // const [hubConnection, setHubConnection] = useState<HubConnection>();
 
-    useEffect(() => {
-        const createHubConnection = async () => {
-            const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build()
+    // useEffect(() => {
+    //     const createHubConnection = async () => {
+    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
+    //             .configureLogging(LogLevel.Information)
+    //             .withAutomaticReconnect()
+    //             .build()
 
-            try {
-                await conn.start();
-                console.log("Real-time connection to server established.")
-            } catch (error) {
-                console.log("Couldn't establish a real-time connection to the server!");
-            }
+    //         try {
+    //             await conn.start();
+    //             console.log("Real-time connection to server established.")
+    //         } catch (error) {
+    //             console.log("Couldn't establish a real-time connection to the server!");
+    //         }
 
-            setHubConnection(conn);
-        };
+    //         setHubConnection(conn);
+    //     };
 
-        createHubConnection();
-    }, []);
+    //     createHubConnection();
+    // }, []);
 
     const removeFromCart = async (e: any) => {
         let itemId = e.target.id;
         await CartService.removeFromCart(itemId);
 
-        hubConnection?.invoke("refresh");
+        props.hubConnection?.invoke("refresh");
         fetchCartItems();
     };
 
@@ -81,7 +86,7 @@ function Cart() {
                     total += Number(currentItem.price);
 
                     Items.push(
-                        <div className="col-sm-4 mt-3 mb-3">
+                        <div key={currentItem.id} className="col-sm-4 mt-3 mb-3">
                             <div className="card">
                                 <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
                                 <div className="card-body">

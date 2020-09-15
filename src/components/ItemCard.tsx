@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthService from '../services/AuthService';
 import CartService from '../services/CartService';
 import { useHistory } from "react-router-dom";
-import IItemCardProps from '../types/IItemCardProps';
+import IItemCardProps from '../types/Props/IItemCardProps';
 
 function ItemCard(props: IItemCardProps) {
     let buyButton = null;
