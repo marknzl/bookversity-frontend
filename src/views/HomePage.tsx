@@ -5,12 +5,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import ItemCard from './ItemCard';
+import HomePageItemCard from '../components/HomePageView/HomePageItemCard';
 
 import AuthService from '../services/AuthService';
 import IHomePageResponse from '../types/Response Types/IHomePageResponse';
 import ItemService from '../services/ItemService';
 import IHomePageProps from '../types/Props/IHomePageProps';
+import FilterBox from '../components/HomePageView/FilterBox';
+import ItemsForSale from '../components/HomePageView/ItemsForSale';
 
 function HomePage(props: IHomePageProps) {
     const [searchTerm, setSearchTerm] = useState<string | null>("");
@@ -94,12 +96,12 @@ function HomePage(props: IHomePageProps) {
             if (AuthService.isLoggedIn()) {
                 if (AuthService.getUserId() !== item.sellerId) {
                     Items.push(
-                        <ItemCard key={item.id} item={item} updateFunc={updateFunc}></ItemCard>
+                        <HomePageItemCard key={item.id} item={item} updateFunc={updateFunc}></HomePageItemCard>
                     )
                 }
             } else {
                 Items.push(
-                    <ItemCard key={item.id} item={item} updateFunc={updateFunc}></ItemCard>
+                    <HomePageItemCard key={item.id} item={item} updateFunc={updateFunc}></HomePageItemCard>
                 )
             }
         }
@@ -121,42 +123,11 @@ function HomePage(props: IHomePageProps) {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-sm-3">
-                        <div className="card mt-3">
-                            <h5 className="card-header">Filters</h5>
-                            <div className="card-body">
-                                <label htmlFor="search-bar">Search:</label>
-                                <input className="form-control mb-3" placeholder="Search..." name="search-bar" onChange={e => handleSearchTermChange(e.target.value)}></input>
+                    {/* Filter box takes 3 columns */}
+                    <FilterBox handleSearchFunc={handleSearchTermChange}/>
 
-                                {/* <label>By Faculty:</label>
-                                <div>
-                                    <a href="Science" onClick={onFacultyClick}><span className="ml-1 badge badge-secondary">Science<button type="button" className="close"></button></span></a>
-                                    <span className="ml-1 badge badge-secondary">Engineering</span>
-                                    <span className="ml-1 badge badge-secondary">Business</span>
-                                    <span className="ml-1 badge badge-secondary">Arts</span>
-                                    <span className="ml-1 badge badge-secondary">Medical and Health Science</span>
-                                    <span className="ml-1 badge badge-secondary">Law</span>
-                                    <span className="ml-1 badge badge-secondary">Education and Social Work</span>
-                                </div> */}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-9">
-                        <div className="container">
-                            <div className="row">
-                                <div className="card mt-3">
-                                    <h5 className="card-header">Items for sale</h5>
-                                    <div className="card-body">
-                                        <div className="container">
-                                            <div className="row">
-                                                {Items}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Items for sale takes up 9 columns */}
+                    <ItemsForSale items={Items} />
                 </div>
             </div>
         )

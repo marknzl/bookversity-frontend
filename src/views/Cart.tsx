@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 import { useHistory } from 'react-router-dom';
 
@@ -12,6 +12,8 @@ import AuthService from '../services/AuthService';
 import ICartResponse from '../types/Response Types/ICartResponse';
 import CartService from '../services/CartService';
 import IViewCartProps from '../types/Props/IViewCartProps';
+import CartItemCard from '../components/CartView/CartItemCard';
+import YourCart from '../components/CartView/YourCart';
 
 function Cart(props: IViewCartProps) {
     let history = useHistory();
@@ -93,43 +95,13 @@ function Cart(props: IViewCartProps) {
                     total += Number(currentItem.price);
 
                     Items.push(
-                        <div key={currentItem.id} className="col-sm-4 mt-3 mb-3">
-                            <div className="card">
-                                <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
-                                <div className="card-body">
-                                    <h5 className="card-title">{currentItem.itemName}</h5>
-                                    <p className="card-text">Price: ${currentItem.price}</p>
-                                    <button id={currentItem.id} onClick={removeFromCart} className="btn btn-danger btn-block btn-large">Remove from cart</button> 
-                                </div>
-                            </div>
-                        </div>
-                    );
+                        <CartItemCard item={currentItem} removeFromCartFunc={removeFromCart} />
+                    )
                 }
             }
 
             return (
-                <Container>
-                    <Row>
-                        <Col>
-                            <div className="card mt-5">
-                                <h5 className="card-header">Your Cart:</h5>
-                                <div className="card-body">
-                                    <div className="container">
-                                        <div className="row">
-                                            {Items}
-                                        </div>
-                                    </div>
-                                    {/* {Items} */}
-                                    <hr />
-                                    <div className="mt-3">
-                                        <h5>Total: ${total}</h5>
-                                        {purchaseButton}
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                <YourCart items={Items} total={total} purchaseButton={purchaseButton} checkoutFunc={checkOut} />
             )
         }
     }

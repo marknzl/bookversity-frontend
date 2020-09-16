@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import IMyItemsResponse from '../types/Response Types/IMyItemsResponse';
 import ItemService from '../services/ItemService';
 import IMyItemsProps from '../types/Props/IMyItemsProps';
+import MyItemsItemCard from '../components/MyItemsView/MyItemsItemCard';
+import MyItemsCard from '../components/MyItemsView/MyItemsCard';
 
 function MyItems(props: IMyItemsProps) {
     useEffect(() => {
@@ -31,10 +33,10 @@ function MyItems(props: IMyItemsProps) {
         });
     };
 
-    const navigate = (e: any) => {
-        e.preventDefault();
-        history.push(`${e.currentTarget.getAttribute('href')}`);
-    };
+    // const navigate = (e: any) => {
+    //     e.preventDefault();
+    //     history.push(`${e.currentTarget.getAttribute('href')}`);
+    // };
 
     const deleteItem = async (e: any) => {
         let itemId = e.target.id;
@@ -59,16 +61,7 @@ function MyItems(props: IMyItemsProps) {
             }
 
             Items.push(
-                <div key={currentItem.id} className="col-sm-4 mt-3">
-                    <div className="card">
-                        <img src={currentItem.itemImageUrl} alt={currentItem.itemName} className="card-img-top"></img>
-                        <div className="card-body">
-                            <h5 className="card-title"><a href={`/item/${currentItem.id}`} onClick={navigate}>{currentItem.itemName}</a></h5>
-                            <p className="card-text">Price: ${currentItem.price}</p>
-                            {button}
-                        </div>
-                    </div>
-                </div>
+                <MyItemsItemCard item={currentItem} button={button} />
             );
         }
     }
@@ -84,16 +77,7 @@ function MyItems(props: IMyItemsProps) {
         )
     } else {
         return (
-            <div className="card">
-                <h5 className="card-header">My Items</h5>
-                <div className="card-body">
-                    <div className="container">
-                        <div className="row">
-                            {Items}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <MyItemsCard items={Items} />
         )
     }
 }

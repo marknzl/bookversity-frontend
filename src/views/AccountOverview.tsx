@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AuthService from '../services/AuthService';
 import IAccountOverviewResponse from '../types/Response Types/IAccountOverviewResponse';
 import IAccountOverview from '../types/IAccountOverview';
+import AccountOverviewCard from '../components/AccountOverviewView/AccountOverviewCard';
 
 function AccountOverview() {
     useEffect(() => {
@@ -42,18 +43,7 @@ function AccountOverview() {
             let overview: IAccountOverview = accountOverviewResponse.accountOverview;
 
             return (
-                <div className="card">
-                    <h5 className="card-header">Overview</h5>
-                    <div className="card-body">
-                        <p><strong>Email: </strong>{overview.email}</p>
-                        <p><strong>First Name: </strong>{overview.firstName}</p>
-                        <p><strong>Last Name: </strong>{overview.lastName}</p>
-                        <p><strong>Items listed: </strong>{overview.itemsListed}</p>
-                        <p><strong>Items for sale: </strong>{overview.itemsForSale}</p>
-                        <p><strong>Total items sold: </strong>{overview.totalItemsSold}</p>
-                        <p><strong>Total dollar sales: </strong>${overview.totalDollarSales}</p>
-                    </div>
-                </div>
+                <AccountOverviewCard overview={overview}/>
             )
         } else {
             return (

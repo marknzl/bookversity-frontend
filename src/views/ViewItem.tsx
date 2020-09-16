@@ -10,6 +10,7 @@ import CartService from '../services/CartService';
 import IViewItemResponse from '../types/Response Types/IViewItemResponse';
 import ItemService from '../services/ItemService';
 import IViewItemProps from '../types/Props/IViewItemProps';
+import ViewItemCard from '../components/ViewItemView/ViewItemCard';
 
 function ViewItem(props: IViewItemProps) {
     let { id } = useParams();
@@ -73,32 +74,7 @@ function ViewItem(props: IViewItemProps) {
             }
 
             return (
-                <Container>
-                    <Row>
-                        <Col>
-                            <div className="card mt-3 mb-5">
-                                <h5 className="card-header">
-                                    Item details: Listing ID #{viewItemResponse.item.id}
-                                </h5>
-                                <div className="card-body">
-                                    <div className="col-sm-4 mt-3 mb-3 mx-auto">
-                                        <div className="card">
-                                            <img className="card-img-top" src={viewItemResponse.item.itemImageUrl}></img>
-                                            <div className="card-body">
-                                                <h5 className="card-title">{viewItemResponse.item.itemName}</h5>
-                                                <p className="card-text">Price: ${viewItemResponse.item.price}</p>
-                                                <p className="card-text"><strong>Description:</strong> {viewItemResponse.item.itemDescription}</p>
-                                                <p className="card-text"><small className="text-muted">Created: {new Date(Date.parse(viewItemResponse.item.timeCreated)).toLocaleDateString("en-us")}</small></p>
-                                                {/* <button id={item.data.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button> */}
-                                                {button}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                <ViewItemCard item={viewItemResponse.item} button={button}/>
             )
         } else {
             return (

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AuthService from '../services/AuthService';
-import CartService from '../services/CartService';
+import AuthService from '../../services/AuthService';
+import CartService from '../../services/CartService';
 import { useHistory } from "react-router-dom";
-import IItemCardProps from '../types/Props/IItemCardProps';
+import IItemCardProps from '../../types/Props/IItemCardProps';
 
-function ItemCard(props: IItemCardProps) {
+function HomePageItemCard(props: IItemCardProps) {
     //let buyButton = null;
     const [buyButton, setBuyButton] = useState<JSX.Element>();
 
@@ -48,4 +48,4 @@ function ItemCard(props: IItemCardProps) {
     )
 }
 
-export default ItemCard;
+export default HomePageItemCard;
