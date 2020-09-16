@@ -67,6 +67,7 @@ function Cart(props: IViewCartProps) {
         })
         .then(res => res.json())
         .then((data) => {
+            props.hubConnection?.invoke("refresh");
             history.push(`/myaccount/orders/${data.orderId}`);
         });
     };
