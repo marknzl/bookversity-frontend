@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from './components/MyNavbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import Cart from './components/Cart';
-import MyAccount from './components/MyAccount';
-import ViewItem from './components/ViewItem';
-import SellItem from './components/SellItem';
-import Login from './components/Login';
-import Register from './components/Register';
+import HomePage from './views/HomePage';
+import Cart from './views/Cart';
+import MyAccount from './views/MyAccount';
+import ViewItem from './views/ViewItem';
+import SellItem from './views/SellItem';
+import Login from './views/Login';
+import Register from './views/Register';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 function App() {

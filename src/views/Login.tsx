@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,6 +13,11 @@ function Login(props: ILoginProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginMsg, setLoginMsg] = useState("");
+    const [loginButton, setLoginButton] = useState<JSX.Element>();
+
+    useEffect(() => {
+        setLoginButton(<button type="submit" className="btn btn-success btn-lg btn-block">Login</button>);
+    }, []);
 
     const history = useHistory();
 
@@ -29,6 +34,8 @@ function Login(props: ILoginProps) {
     const login = (e: any) => {
         e.preventDefault();
 
+        setLoginButton(<button type="submit" className="btn btn-success btn-lg btn-block" disabled>Logging in...</button>);
+
         AuthService.login(email, password).then((res) => {
             localStorage.setItem("jwt", res.data.jwtToken);
             localStorage.setItem("userId", res.data.userId);
@@ -36,7 +43,8 @@ function Login(props: ILoginProps) {
             history.push('/');
         },
         (error) => {
-            setLoginMsg("Invalid login!")
+            setLoginMsg("Invalid login!");
+            setLoginButton(<button type="submit" className="btn btn-success btn-lg btn-block">Login</button>);
             console.log(error);
         });
     };
@@ -59,7 +67,7 @@ function Login(props: ILoginProps) {
                                     <input value={password} onChange={onChangePassword} type="password" className="form-control" required></input>
                                 </div>
 
-                                <button type="submit" className="btn btn-success btn-lg btn-block">Login</button>
+                                {loginButton}
                                 <p className="text-danger mt-3">{loginMsg}</p>
                             </form>
                         </div>
