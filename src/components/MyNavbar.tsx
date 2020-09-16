@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import { Link, useHistory } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
-import INavbarProps from '../types/INavbarProps';
+import INavbarProps from '../types/Props/INavbarProps';
 
 function MyNavbar(props: INavbarProps) {
     let history = useHistory();

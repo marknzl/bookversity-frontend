@@ -4,15 +4,26 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import axios from 'axios';
+
+import { useHistory } from 'react-router-dom';
+
 import AuthService from '../services/AuthService';
-// import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import ICartResponse from '../types/Response Types/ICartResponse';
 import CartService from '../services/CartService';
 import IViewCartProps from '../types/Props/IViewCartProps';
 
 function Cart(props: IViewCartProps) {
+    let history = useHistory();
+
+    const [purchaseButton, setPurchaseButton] = useState<JSX.Element>();
+
     useEffect(() => {
         fetchCartItems();
+
+        if (AuthService.isLoggedIn()) {
+            setPurchaseButton(<button className="btn btn-success btn-lg btn-block" onClick={checkOut}>Purchase</button>)
+        }
     }, []);
 
     props.hubConnection?.on("refresh", () => {
@@ -35,34 +46,29 @@ function Cart(props: IViewCartProps) {
         });
     };
 
-    // const [hubConnection, setHubConnection] = useState<HubConnection>();
-
-    // useEffect(() => {
-    //     const createHubConnection = async () => {
-    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-    //             .configureLogging(LogLevel.Information)
-    //             .withAutomaticReconnect()
-    //             .build()
-
-    //         try {
-    //             await conn.start();
-    //             console.log("Real-time connection to server established.")
-    //         } catch (error) {
-    //             console.log("Couldn't establish a real-time connection to the server!");
-    //         }
-
-    //         setHubConnection(conn);
-    //     };
-
-    //     createHubConnection();
-    // }, []);
-
     const removeFromCart = async (e: any) => {
         let itemId = e.target.id;
         await CartService.removeFromCart(itemId);
 
         props.hubConnection?.invoke("refresh");
         fetchCartItems();
+    };
+
+    const checkOut = async (e: any) => {
+        e.preventDefault();
+
+        setPurchaseButton(<button className="btn btn-success btn-lg btn-block" disabled>Purchasing...</button>);
+
+        await fetch("https://bookversity-backend.azurewebsites.net/api/Cart/Checkout", {
+            method: 'POST',
+            headers: {
+                'Authorization': AuthService.getAuthHeader().Authorization
+            }
+        })
+        .then(res => res.json())
+        .then((data) => {
+            history.push(`/myaccount/orders/${data.orderId}`);
+        });
     };
 
     if (!AuthService.isLoggedIn()) {
@@ -116,7 +122,7 @@ function Cart(props: IViewCartProps) {
                                     <hr />
                                     <div className="mt-3">
                                         <h5>Total: ${total}</h5>
-                                        <button className="btn btn-success btn-lg btn-block">Purchase</button>
+                                        {purchaseButton}
                                     </div>
                                 </div>
                             </div>

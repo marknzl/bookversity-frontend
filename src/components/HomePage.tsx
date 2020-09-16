@@ -7,8 +7,6 @@ import Col from 'react-bootstrap/Col';
 
 import ItemCard from './ItemCard';
 
-//import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
-
 import AuthService from '../services/AuthService';
 import IHomePageResponse from '../types/Response Types/IHomePageResponse';
 import ItemService from '../services/ItemService';
@@ -35,31 +33,6 @@ function HomePage(props: IHomePageProps) {
         items: null,
         error: false
     });
-
-    // const [hubConnection, setHubConnection] = useState<HubConnection>();
-
-    // useEffect(() => {
-    //     const createHubConnection = async () => {
-    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-    //             .configureLogging(LogLevel.Information)
-    //             .withAutomaticReconnect()
-    //             .build()
-    //         try {
-    //             conn.on("refresh", () => {
-    //                 fetchItems();
-    //             });
-
-    //             await conn.start();
-    //             console.log("Real-time connection to server established.")
-    //         } catch (error) {
-    //             console.log("Couldn't establish a real-time connection to the server!");
-    //         }
-
-    //         setHubConnection(conn);
-    //     };
-
-    //     createHubConnection();
-    // }, []);
 
     const fetchItems = async () => {
         // const fItems = await fetch(

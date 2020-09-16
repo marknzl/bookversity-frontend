@@ -9,7 +9,6 @@ import AuthService from '../services/AuthService';
 import CartService from '../services/CartService';
 import IViewItemResponse from '../types/Response Types/IViewItemResponse';
 import ItemService from '../services/ItemService';
-// import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 import IViewItemProps from '../types/Props/IViewItemProps';
 
 function ViewItem(props: IViewItemProps) {
@@ -23,31 +22,6 @@ function ViewItem(props: IViewItemProps) {
 
         fetchItem();
     }, []);
-    
-    // const [hubConnection, setHubConnection] = useState<HubConnection>();
-
-    // useEffect(() => {
-    //     const createHubConnection = async () => {
-    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-    //             .configureLogging(LogLevel.Information)
-    //             .withAutomaticReconnect()
-    //             .build()
-    //         try {
-    //             conn.on("refresh", () => {
-    //                 fetchItem();
-    //             });
-
-    //             await conn.start();
-    //             console.log("Real-time connection to server established.")
-    //         } catch (error) {
-    //             console.log("Couldn't establish a real-time connection to the server!");
-    //         }
-
-    //         setHubConnection(conn);
-    //     };
-
-    //     createHubConnection();
-    // }, []);
 
     const [viewItemResponse, setViewItemResponse] = useState<IViewItemResponse>({
         loading: true,
@@ -102,7 +76,7 @@ function ViewItem(props: IViewItemProps) {
                 <Container>
                     <Row>
                         <Col>
-                            <div className="card mt-5">
+                            <div className="card mt-3 mb-5">
                                 <h5 className="card-header">
                                     Item details: Listing ID #{viewItemResponse.item.id}
                                 </h5>

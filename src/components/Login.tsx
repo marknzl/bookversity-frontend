@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import AuthService from '../services/AuthService';
 
 import { useHistory } from 'react-router-dom';
-import ILoginProps from '../types/ILoginProps';
+import ILoginProps from '../types/Props/ILoginProps';
 
 function Login(props: ILoginProps) {
     const [email, setEmail] = useState("");

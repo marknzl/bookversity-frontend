@@ -1,6 +1,7 @@
 interface IItem {
     id: string,
     sellerId: string,
+    sellerEmail: string,
     itemName: string,
     itemDescription: string,
     price: number,

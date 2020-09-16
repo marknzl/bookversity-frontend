@@ -9,6 +9,7 @@ import AccountOverview from './AccountOverview';
 
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import IMyAccountProps from '../types/Props/IMyAccountProps';
+import ViewOrder from './ViewOrder';
 
 function MyAccount(props: IMyAccountProps) {
     let history = useHistory();
@@ -64,6 +65,9 @@ function MyAccount(props: IMyAccountProps) {
                                             </Route>
                                             <Route exact path="/myaccount/orders">
                                                 <Orders />
+                                            </Route>
+                                            <Route exact path="/myaccount/orders/:id">
+                                                <ViewOrder />
                                             </Route>
                                         </Switch>
                                     </div>

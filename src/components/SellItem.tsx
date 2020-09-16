@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 
 import AuthService from '../services/AuthService';
 import axios from 'axios';
-// import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import ISellItemProps from '../types/Props/ISellItemProps';
 
 function SellItem(props: ISellItemProps) {
@@ -18,29 +17,8 @@ function SellItem(props: ISellItemProps) {
     const [image, setImage] = useState<FileList | null>(null);
 
     const [clickedButton, setClickedButton] = useState<boolean>(false);
-    // const [hubConnection, setHubConnection] = useState<HubConnection>();
 
     let history = useHistory();
-
-    // useEffect(() => {
-    //     const createHubConnection = async () => {
-    //         const conn = new HubConnectionBuilder().withUrl("https://bookversity-backend.azurewebsites.net/refreshHub")
-    //             .configureLogging(LogLevel.Information)
-    //             .withAutomaticReconnect()
-    //             .build()
-
-    //         try {
-    //             await conn.start();
-    //             console.log("Real-time connection to server established.")
-    //         } catch (error) {
-    //             console.log("Couldn't establish a real-time connection to the server!");
-    //         }
-
-    //         setHubConnection(conn);
-    //     };
-
-    //     createHubConnection();
-    // }, []);
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
