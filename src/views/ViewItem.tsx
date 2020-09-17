@@ -11,6 +11,7 @@ import IViewItemResponse from '../types/Response Types/IViewItemResponse';
 import ItemService from '../services/ItemService';
 import IViewItemProps from '../types/Props/IViewItemProps';
 import ViewItemCard from '../components/ViewItemView/ViewItemCard';
+import IItem from '../shared/IItem';
 
 function ViewItem(props: IViewItemProps) {
     let { id } = useParams();
@@ -57,24 +58,25 @@ function ViewItem(props: IViewItemProps) {
         )
     } else {
         if (viewItemResponse.item !== null) {
-            let button = <button id={viewItemResponse.item.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button>
+            let item: IItem = viewItemResponse.item;
+            let button = <button id={item.id} className="btn btn-success btn-lg btn-block" onClick={addToCart}>Add to cart</button>
 
             if (AuthService.isLoggedIn()) {
-                if (viewItemResponse.item.sellerId === AuthService.getUserId()) {
-                    button = <button id={viewItemResponse.item.id} disabled className="btn btn-success btn-lg btn-block">This is your listing</button>
-                } else if (viewItemResponse.item.inUserCart) {
-                    button = <button id={viewItemResponse.item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
+                if (item.sellerId === AuthService.getUserId()) {
+                    button = <button id={item.id} disabled className="btn btn-success btn-lg btn-block">This is your listing</button>
+                } else if (item.inUserCart) {
+                    button = <button id={item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
                 }
             } else {
                 if (viewItemResponse.item.inUserCart) {
-                    button = <button id={viewItemResponse.item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
+                    button = <button id={item.id} disabled className="btn btn-warning btn-lg btn-block">Unavailable</button>
                 } else {
-                    button = <button id={viewItemResponse.item.id} className="btn btn-success btn-lg btn-block" disabled>Login to add cart</button>
+                    button = <button id={item.id} className="btn btn-success btn-lg btn-block" disabled>Login to add cart</button>
                 }
             }
 
             return (
-                <ViewItemCard item={viewItemResponse.item} button={button}/>
+                <ViewItemCard item={item} button={button}/>
             )
         } else {
             return (

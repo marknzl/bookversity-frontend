@@ -10,8 +10,8 @@ function YourCart(props: IYourCartProps) {
         <Container>
             <Row>
                 <Col>
-                    <div className="card mt-5">
-                        <h5 className="card-header">Your Cart:</h5>
+                    <div className="card mt-5 border-dark">
+                        <h5 className="card-header bg-dark text-white">Your Cart:</h5>
                         <div className="card-body">
                             <div className="container">
                                 <div className="row">

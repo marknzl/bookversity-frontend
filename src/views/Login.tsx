@@ -53,8 +53,8 @@ function Login(props: ILoginProps) {
         <Container>
             <Row>
                 <Col>
-                    <div className="card mt-5">
-                        <h5 className="card-header">Login</h5>
+                    <div className="card mt-5 border-dark">
+                        <h5 className="card-header bg-dark text-white">Login</h5>
                         <div className="card-body">
                             <form onSubmit={login} className="mt-3">
                                 <div className="form-group">

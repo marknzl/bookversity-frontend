@@ -6,8 +6,8 @@ function ItemsForSale(props: IItemsForSaleProps) {
         <div className="col-sm-9">
             <div className="container">
                 <div className="row">
-                    <div className="card mt-3">
-                        <h5 className="card-header">Items for sale</h5>
+                    <div className="card mt-3 border-dark">
+                        <h5 className="card-header bg-dark text-white">Items for sale</h5>
                         <div className="card-body">
                             <div className="container">
                                 <div className="row">

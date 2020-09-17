@@ -53,8 +53,8 @@ function Register() {
             <Container>
                 <Row>
                     <Col>
-                        <div className="card mt-5">
-                            <h5 className="card-header">Register</h5>
+                        <div className="card mt-5 border-dark">
+                            <h5 className="card-header bg-dark text-white">Register</h5>
                             <div className="card-body">
                                 <form onSubmit={register} className="mt-3">
                                     <div className="form-group">

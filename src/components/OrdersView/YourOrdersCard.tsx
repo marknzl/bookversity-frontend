@@ -3,8 +3,8 @@ import IYourOrdersCardProps from '../../types/Props/IYourOrdersCardProps';
 
 function YourOrdersCard(props: IYourOrdersCardProps) {
     return (
-        <div className="card">
-            <h5 className="card-header">Your orders</h5>
+        <div className="card border-dark">
+            <h5 className="card-header bg-dark text-white">Your orders</h5>
             <div className="card-body">
                 <table className="table">
                     <thead className="thead-dark">

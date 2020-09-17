@@ -55,8 +55,8 @@ function SellItem(props: ISellItemProps) {
             <Container>
                 <Row>
                     <Col>
-                        <div className="card mt-5">
-                            <h5 className="card-header">Sell a new item</h5>
+                        <div className="card mt-5 border-dark">
+                            <h5 className="card-header bg-dark text-white">Sell a new item</h5>
                             <div className="card-body">
                             <form className="mt-3" onSubmit={e => onSubmit(e)}>
                                 <div className="form-group">

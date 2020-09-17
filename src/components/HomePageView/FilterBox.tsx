@@ -4,8 +4,8 @@ import IFilterBoxProps from '../../types/Props/IFilterBoxProps';
 function FilterBox(props: IFilterBoxProps) {
     return (
         <div className="col-sm-3">
-            <div className="card mt-3">
-                <h5 className="card-header">Filters</h5>
+            <div className="card mt-3 border-dark">
+                <h5 className="card-header bg-dark text-white">Filters</h5>
                 <div className="card-body">
                     <label htmlFor="search-bar">Search:</label>
                     <input className="form-control mb-3" placeholder="Search..." name="search-bar" onChange={e => props.handleSearchFunc(e.target.value)}></input>

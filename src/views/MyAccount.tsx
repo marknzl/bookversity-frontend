@@ -33,22 +33,22 @@ function MyAccount(props: IMyAccountProps) {
         <Container>
             <Row>
                 <Col>
-                    <div className="card mt-4">
-                        <h5 className="card-header">Your account</h5>
+                    <div className="card mt-4 border-dark">
+                        <h5 className="card-header bg-dark text-white">Your account</h5>
                         <div className="card-body">
                             <Row>
                                 <div className="col-sm-3 mt-3">
-                                    <div className="card">
-                                        <h5 className="card-header">Navigate</h5>
+                                    <div className="card border-dark">
+                                        <h5 className="card-header bg-dark text-white">Navigate</h5>
                                         <div className="card-body">
                                             <ul className="list-group">
-                                                <li className="list-group-item">
+                                                <li className="list-group-item border-dark">
                                                     <a href="/myaccount" onClick={myAccount}>Account Overview</a>
                                                 </li>
-                                                <li className="list-group-item">
+                                                <li className="list-group-item border-dark">
                                                     <a href="/myitems" onClick={myItems}>My Items</a>
                                                 </li>
-                                                <li className="list-group-item">
+                                                <li className="list-group-item border-dark">
                                                     <a href="/myaccount/orders" onClick={orders}>Orders</a>
                                                 </li>
                                             </ul>

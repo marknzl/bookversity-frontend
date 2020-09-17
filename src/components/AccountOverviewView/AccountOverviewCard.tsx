@@ -3,8 +3,8 @@ import IAccountOverviewCardProps from '../../types/Props/IAccountOverviewCardPro
 
 function AccountOverviewCard(props: IAccountOverviewCardProps) {
     return (
-        <div className="card">
-            <h5 className="card-header">Overview</h5>
+        <div className="card border-dark">
+            <h5 className="card-header bg-dark text-white">Overview</h5>
             <div className="card-body">
                 <p><strong>Email: </strong>{props.overview.email}</p>
                 <p><strong>First Name: </strong>{props.overview.firstName}</p>
