@@ -67,8 +67,8 @@ function Register() {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Password</label>
-                                        <input value={password} onChange={onChangePassword} type="password" className="form-control" required></input>
+                                        <label>Password (Min 5 chars)</label>
+                                        <input value={password} onChange={onChangePassword} type="password" minLength={5} className="form-control" required></input>
                                     </div>
 
                                     <div className="form-group">
