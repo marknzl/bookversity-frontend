@@ -51,9 +51,8 @@ function Cart(props: IViewCartProps) {
     const removeFromCart = async (e: any) => {
         let itemId = e.target.id;
         await CartService.removeFromCart(itemId);
-
-        props.hubConnection?.invoke("refresh");
-        fetchCartItems();
+        await props.hubConnection?.invoke("refresh");
+        await fetchCartItems();
     };
 
     const checkOut = async (e: any) => {
