@@ -59,7 +59,7 @@ function Login(props: ILoginProps) {
                             <form onSubmit={login} className="mt-3">
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input value={email} onChange={onChangeEmail} type="text" className="form-control" required></input>
+                                    <input value={email} onChange={onChangeEmail} type="email" className="form-control" required></input>
                                 </div>
 
                                 <div className="form-group">

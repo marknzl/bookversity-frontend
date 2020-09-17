@@ -13,8 +13,8 @@ function ViewItemCard(props: IViewItemCardProps) {
         <Container>
             <Row>
                 <Col>
-                    <div className="card mt-3 mb-5">
-                        <h5 className="card-header">
+                    <div className="card mt-3 mb-5 border-dark">
+                        <h5 className="card-header bg-dark text-white">
                             Item details: Listing ID #{item.id}
                         </h5>
                         <div className="card-body">

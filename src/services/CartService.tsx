@@ -1,23 +1,17 @@
 import axios from 'axios';
 import AuthService from './AuthService';
+import { API_URL } from '../utils/Constants';
 
-const API_URL = "https://bookversity-backend.azurewebsites.net/api/";
-//const API_URL = "https://localhost:5001/api/";
+const CART_API_URL = API_URL + "Cart/";
 
 function addToCart(itemId: number) {
-    return axios.post(API_URL + `Cart/Add?itemId=${itemId}`, {}, {
+    return axios.post(CART_API_URL + `Add?itemId=${itemId}`, {}, {
         headers: AuthService.getAuthHeader()
     });
 }
 
-// function myCart() {
-//     return axios.get(API_URL + 'Cart/MyCart', {
-//         headers: AuthService.getAuthHeader()
-//     });
-// }
-
 const fetchCartItems = async() => {
-    return await fetch("https://bookversity-backend.azurewebsites.net/api/Cart/MyCart", {
+    return await fetch(CART_API_URL + "MyCart", {
         headers: {
             'Authorization': `${AuthService.getAuthHeader().Authorization}`
         },
@@ -25,7 +19,7 @@ const fetchCartItems = async() => {
 }
 
 const removeFromCart = async(itemId: string) => {
-    await fetch(`https://bookversity-backend.azurewebsites.net/api/Cart/Remove?itemId=${itemId}`, {
+    await fetch(`${CART_API_URL}Remove?itemId=${itemId}`, {
         method: 'POST',
         headers: {
             'Authorization': `${AuthService.getAuthHeader().Authorization}`

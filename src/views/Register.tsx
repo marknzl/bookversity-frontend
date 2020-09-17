@@ -13,8 +13,9 @@ function Register() {
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [button, setButton] = useState<JSX.Element>(<button type="submit" className="btn btn-success btn-lg btn-block">Register</button>);
 
-    const [errorMessage, setErrorMessage] = useState("");
+    const [message, setMessage] = useState<JSX.Element>();
 
     let history = useHistory();
 
@@ -40,11 +41,14 @@ function Register() {
 
     const register = (e: any) => {
         e.preventDefault();
+        setMessage(undefined);
+        setButton(<button type="submit" className="btn btn-success btn-lg btn-block" disabled>Registering...</button>)
         AuthService.register(email, firstName, lastName, password).then(() => {
             history.push('/login');
         },
         (error) => {
-            setErrorMessage("Failed to register, email already in use!");
+            setMessage(<p className="text-danger mt-3">Failed to register!</p>);
+            setButton(<button type="submit" className="btn btn-success btn-lg btn-block">Register</button>);
         });
     };
 
@@ -77,8 +81,9 @@ function Register() {
                                         <input value={lastName} onChange={onChangeLastName} type="text" className="form-control" required></input>
                                     </div>
 
-                                    <button type="submit" className="btn btn-success btn-lg btn-block">Register</button>
-                                    <p className="text-danger mt-3">{errorMessage}</p>
+                                    {button}
+                                    {message}
+                                    <p className="text-danger mt-3"></p>
                                 </form>
                             </div>
                         </div>

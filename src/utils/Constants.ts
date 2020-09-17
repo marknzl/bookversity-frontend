@@ -1,0 +1,1 @@
+export const API_URL = "https://bookversity-backend.azurewebsites.net/api/";

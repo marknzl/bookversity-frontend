@@ -1,9 +1,10 @@
 import AuthService from "./AuthService";
+import { API_URL } from "../utils/Constants";
 
-const API_URL = "https://bookversity-backend.azurewebsites.net/api/";
+const ORDER_API_URL = API_URL + "Orders/"
 
 const viewOrder = async (orderId: number) => {
-    return await fetch(API_URL + "Orders/ViewOrder?orderId=" + orderId, {
+    return await fetch(ORDER_API_URL + "ViewOrder?orderId=" + orderId, {
         headers: {
             'Authorization': AuthService.getAuthHeader().Authorization
         }

@@ -1,10 +1,10 @@
 import axios from 'axios';
+import { API_URL } from '../utils/Constants';
 
-const API_URL = "https://bookversity-backend.azurewebsites.net/api";
-//const API_URL = "https://localhost:5001/api";
+const AUTH_API_URL = API_URL + "User/";
 
 function register(email: string, firstName: string, lastName: string, password: string) {
-    return axios.post(API_URL + "/User/Register", {
+    return axios.post(AUTH_API_URL + "Register", {
         email,
         firstName,
         lastName,
@@ -13,7 +13,7 @@ function register(email: string, firstName: string, lastName: string, password: 
 }
 
 function login(email: string, password: string) {
-    return axios.post(API_URL + "/User/Login", {
+    return axios.post(AUTH_API_URL + "Login", {
         email,
         password
     });
