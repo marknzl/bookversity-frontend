@@ -1,7 +1,7 @@
 # bookversity-frontend
 ![Build Status](https://dev.azure.com/msa-devops/Bookversity/_apis/build/status/marknzl.bookversity-frontend?branchName=master)
 
-Frontend for the Bookversity web application. Part of my submission for the Microsoft Student Accelerator 2020 Phase 2 project.
+Frontend for the Bookversity web application. Part of my submission for the Microsoft Student Accelerator 2020 Phase 2 project. Click [here](https://bookversity-app.azurewebsites.net/) to view to app.
 
 # Intro
 Bookversity (yes, not the greatest name, pls don't roast <3) is a simple web platform I built dedicated to facilitate the selling of second-hand university textbooks. This is the frontend of the project, you can find the backend [here](https://github.com/marknzl/Bookversity-Backend). This frontend utilizes React + TypeScript providing a 'SPA' type experience with a responsive UI. This project utilizes CI/CD pipelines via Azure DevOps.
