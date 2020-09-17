@@ -9,16 +9,16 @@ Bookversity (yes, not the greatest name, pls don't roast <3) is a simple web pla
 # Screenshots
 
 ## Homepage
-![Homepage image](screenshots/homepage.png)
+![Homepage image](screenshots/homepage.PNG)
 
 ## Cart
-![Cart image](screenshots/cart.png)
+![Cart image](screenshots/cart.PNG)
 
 ## Account Overview
-![Account overview](screenshots/account_overview.png)
+![Account overview](screenshots/account_overview.PNG)
 
 ## Viewing an order
-![Order viewing](screenshots/order_viewing.png)
+![Order viewing](screenshots/order_viewing.PNG)
 
 # Frontend app architecture
 
