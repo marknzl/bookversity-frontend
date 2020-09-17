@@ -41,7 +41,7 @@ function HomePage(props: IHomePageProps) {
         //     "https://bookversity-backend.azurewebsites.net/api/Item/Latest10"
         // );
 
-        const fItems = await ItemService.latest10();
+        const fItems = await ItemService.latest();
 
         setHomePageResponse({
             loading: false,

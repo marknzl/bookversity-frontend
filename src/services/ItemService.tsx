@@ -3,8 +3,8 @@ import { API_URL } from '../utils/Constants';
 
 const ITEM_API_URL = API_URL + "Item/";
 
-const latest10 = async() => {
-    return await fetch(ITEM_API_URL + "Latest10");
+const latest = async() => {
+    return await fetch(ITEM_API_URL + "Latest");
 }
 
 const fetchItem = async(itemId: string) => {
@@ -33,7 +33,7 @@ const myItems = async() => {
 }
 
 export default {
-    latest10,
+    latest,
     fetchItem,
     searchItems,
     deleteItem,
